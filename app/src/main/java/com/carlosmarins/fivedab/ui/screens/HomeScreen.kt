@@ -34,6 +34,7 @@ import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.ButtonDefaults
 import androidx.wear.compose.material.Card
+import androidx.wear.compose.material.CardDefaults
 import androidx.wear.compose.material.Chip
 import androidx.wear.compose.material.ChipDefaults
 import androidx.wear.compose.material.Icon
@@ -132,7 +133,7 @@ fun HomeScreen(
 
                 Card(
                     onClick = { onSelectRoutine(routine.id) },
-                    backgroundPainter = ChipDefaults.chipBackgroundPainter(
+                    backgroundPainter = CardDefaults.cardBackgroundPainter(
                         startBackgroundColor = WatchSurface,
                         endBackgroundColor = WatchSurfaceVariant
                     ),

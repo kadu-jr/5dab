@@ -24,12 +24,6 @@ class WorkoutRepository(private val context: Context) {
         encodeDefaults = true
     }
 
-    companion object {
-        private val KEY_ROUTINES = stringPreferencesKey("saved_routines_json")
-        private val KEY_SETTINGS = stringPreferencesKey("workout_settings_json")
-        private val KEY_HISTORY = stringPreferencesKey("workout_history_json")
-    }
-
     val routinesFlow: Flow<List<WorkoutRoutine>> = context.dataStore.data.map { prefs ->
         val raw = prefs[KEY_ROUTINES]
         if (raw.isNullOrBlank()) {
@@ -185,7 +179,11 @@ class WorkoutRepository(private val context: Context) {
         }
     }
 
-    companion object StreakCalculator {
+    companion object {
+        private val KEY_ROUTINES = stringPreferencesKey("saved_routines_json")
+        private val KEY_SETTINGS = stringPreferencesKey("workout_settings_json")
+        private val KEY_HISTORY = stringPreferencesKey("workout_history_json")
+
         fun computeStreakDays(history: List<CompletedWorkoutSession>): Int {
             if (history.isEmpty()) return 0
             val zone = ZoneId.systemDefault()

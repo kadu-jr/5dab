@@ -76,8 +76,7 @@ class HealthConnectSync(private val context: Context) {
                 endZoneOffset = zoneOffset,
                 exerciseType = ExerciseSessionRecord.EXERCISE_TYPE_CALISTHENICS,
                 title = "5D Ab: ${session.routineName}",
-                notes = notes,
-                metadata = Metadata.Empty
+                notes = notes
             )
             recordsToInsert.add(exerciseRecord)
 
@@ -90,8 +89,7 @@ class HealthConnectSync(private val context: Context) {
                         startZoneOffset = zoneOffset,
                         endTime = endInstant,
                         endZoneOffset = zoneOffset,
-                        energy = Energy.kilocalories(session.caloriesBurnedKcal),
-                        metadata = Metadata.Empty
+                        energy = Energy.kilocalories(session.caloriesBurnedKcal)
                     )
                 )
             }
@@ -114,8 +112,7 @@ class HealthConnectSync(private val context: Context) {
                                 time = Instant.ofEpochMilli(point.timestampEpochMs),
                                 beatsPerMinute = point.bpm.toLong()
                             )
-                        },
-                        metadata = Metadata.Empty
+                        }
                     )
                 )
             }
