@@ -17,9 +17,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
+import com.carlosmarins.fivedab.ui.components.WatchIcons
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -232,7 +232,7 @@ fun HomeScreen(
                     },
                     icon = {
                         Icon(
-                            imageVector = Icons.Default.History,
+                            imageVector = WatchIcons.History,
                             contentDescription = null,
                             tint = WatchEmerald,
                             modifier = Modifier.size(18.dp)

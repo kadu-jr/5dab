@@ -17,13 +17,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.FastForward
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.LocalFireDepartment
-import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.SkipNext
-import androidx.compose.material.icons.filled.Stop
+import com.carlosmarins.fivedab.ui.components.WatchIcons
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -145,7 +141,7 @@ fun ActiveWorkoutScreen(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Icon(
-                        imageVector = Icons.Default.LocalFireDepartment,
+                        imageVector = WatchIcons.Fire,
                         contentDescription = "Calories",
                         tint = WatchAmber,
                         modifier = Modifier.size(11.dp)
@@ -329,7 +325,7 @@ fun ActiveWorkoutScreen(
                         modifier = Modifier.size(36.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Stop,
+                            imageVector = WatchIcons.Stop,
                             contentDescription = "End Workout",
                             tint = Color.Black,
                             modifier = Modifier.size(18.dp)
@@ -353,7 +349,7 @@ fun ActiveWorkoutScreen(
                         modifier = Modifier.size(36.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.Default.SkipNext,
+                            imageVector = WatchIcons.SkipNext,
                             contentDescription = "Skip Set",
                             tint = Color.White,
                             modifier = Modifier.size(18.dp)
@@ -371,7 +367,7 @@ fun ActiveWorkoutScreen(
                         modifier = Modifier.size(34.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Pause,
+                            imageVector = WatchIcons.Pause,
                             contentDescription = "Pause",
                             tint = Color.White,
                             modifier = Modifier.size(16.dp)
@@ -409,7 +405,7 @@ fun ActiveWorkoutScreen(
                     ) {
                         Icon(
                             imageVector = if (state.phase == WorkoutPhase.REST || state.phase == WorkoutPhase.PREP) {
-                                Icons.Default.FastForward
+                                WatchIcons.FastForward
                             } else {
                                 Icons.Default.Check
                             },
