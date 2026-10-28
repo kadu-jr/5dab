@@ -66,8 +66,20 @@ if ($WatchIpPort) {
     & $AdbCmd connect $WatchIpPort
 }
 
-# 5. Install APK & Grant Sensor Permissions
-Write-Host "[4/4] Installing 5D Ab ($ApkPath) onto Galaxy Watch8 Classic..." -ForegroundColor Cyan
+# 5. Wait for Watch & Keep Screen Awake During Install
+Write-Host "[4/4] Waiting for Galaxy Watch8 Classic to wake up on Wi-Fi..." -ForegroundColor Cyan
+& $AdbCmd wait-for-device
+
+$keepAwakeJob = Start-Job -ScriptBlock {
+    param($adbPath)
+    for ($i = 0; $i -lt 25; $i++) {
+        & $adbPath shell input keyevent 224 2>$null
+        & $adbPath shell input touchscreen swipe 200 200 200 205 50 2>$null
+        Start-Sleep -Seconds 2
+    }
+} -ArgumentList $AdbCmd
+
+Write-Host "Installing 5D Ab ($ApkPath) onto Galaxy Watch8 Classic..." -ForegroundColor Cyan
 & $AdbCmd install -r $ApkPath
 
 Write-Host "Granting Heart Rate & Activity sensor permissions..." -ForegroundColor Cyan
@@ -75,4 +87,10 @@ Write-Host "Granting Heart Rate & Activity sensor permissions..." -ForegroundCol
 & $AdbCmd shell pm grant com.carlosmarins.fivedab android.permission.ACTIVITY_RECOGNITION 2>$null
 & $AdbCmd shell pm grant com.carlosmarins.fivedab android.permission.POST_NOTIFICATIONS 2>$null
 
-Write-Host "`n✓ 5D Ab is installed and ready on your Galaxy Watch8 Classic!" -ForegroundColor Green
+Write-Host "Launching 5D Ab on Galaxy Watch8 Classic..." -ForegroundColor Cyan
+& $AdbCmd shell am start -n com.carlosmarins.fivedab/com.carlosmarins.fivedab.MainActivity
+
+Stop-Job $keepAwakeJob -ErrorAction SilentlyContinue
+Remove-Job $keepAwakeJob -Force -ErrorAction SilentlyContinue
+
+Write-Host "`n✓ 5D Ab is installed and running on your Galaxy Watch8 Classic!" -ForegroundColor Green
