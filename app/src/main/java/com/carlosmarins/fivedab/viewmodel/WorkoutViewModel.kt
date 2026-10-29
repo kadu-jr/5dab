@@ -41,11 +41,11 @@ enum class WorkoutPhase {
 data class ActiveWorkoutUiState(
     val phase: WorkoutPhase = WorkoutPhase.IDLE,
     val phaseBeforePause: WorkoutPhase = WorkoutPhase.ACTIVE_SET,
-    val routine: WorkoutRoutine = PresetRoutines.classic5DAbRoutine,
+    val routine: WorkoutRoutine = PresetRoutines.segundaRoutine,
     val currentStepIndex: Int = 0,
-    val currentStep: WorkoutStep = PresetRoutines.classic5DAbRoutine.steps.first(),
+    val currentStep: WorkoutStep = PresetRoutines.segundaRoutine.steps.first(),
     val currentExercise: ExerciseDefinition = PresetRoutines.getExercise(
-        PresetRoutines.classic5DAbRoutine.steps.first().exerciseId
+        PresetRoutines.segundaRoutine.steps.first().exerciseId
     ),
     val nextExercise: ExerciseDefinition? = null,
     val currentProgress: Int = 0,          // Current rep count OR elapsed seconds in current hold
@@ -106,7 +106,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     fun getRoutineById(routineId: String): WorkoutRoutine {
         return routines.value.find { it.id == routineId }
             ?: PresetRoutines.allPresetRoutines.find { it.id == routineId }
-            ?: PresetRoutines.classic5DAbRoutine
+            ?: PresetRoutines.segundaRoutine
     }
 
     fun updateRoutineStep(

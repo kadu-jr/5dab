@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -39,15 +39,12 @@ import androidx.wear.compose.material.TimeText
 import com.carlosmarins.fivedab.data.PresetRoutines
 import com.carlosmarins.fivedab.data.StepMode
 import com.carlosmarins.fivedab.data.WorkoutRoutine
-import com.carlosmarins.fivedab.ui.components.DimensionBadge
-import com.carlosmarins.fivedab.ui.components.FiveDPentagonRadar
 import com.carlosmarins.fivedab.ui.components.bezelScrollableList
-import com.carlosmarins.fivedab.ui.theme.WatchCoral
-import com.carlosmarins.fivedab.ui.theme.WatchCyan
-import com.carlosmarins.fivedab.ui.theme.WatchEmerald
-import com.carlosmarins.fivedab.ui.theme.WatchSurface
-import com.carlosmarins.fivedab.ui.theme.WatchTextSecondary
-import com.carlosmarins.fivedab.ui.theme.accentColor
+import com.carlosmarins.fivedab.ui.theme.OneUiBlue
+import com.carlosmarins.fivedab.ui.theme.OneUiCardSurface
+import com.carlosmarins.fivedab.ui.theme.OneUiHealthGreen
+import com.carlosmarins.fivedab.ui.theme.OneUiHeartRed
+import com.carlosmarins.fivedab.ui.theme.OneUiTextSecondary
 
 @Composable
 fun RoutineDetailScreen(
@@ -58,9 +55,6 @@ fun RoutineDetailScreen(
     onResetOrDelete: () -> Unit
 ) {
     val listState = rememberScalingLazyListState()
-    val dimensions = routine.steps
-        .map { PresetRoutines.getExercise(it.exerciseId).dimension }
-        .distinct()
 
     val estimatedSeconds = routine.steps.sumOf { step ->
         val ex = PresetRoutines.getExercise(step.exerciseId)
@@ -96,35 +90,31 @@ fun RoutineDetailScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    FiveDPentagonRadar(
-                        activeDimensions = dimensions,
-                        size = 44.dp
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = routine.name,
                         color = Color.White,
-                        fontSize = 14.sp,
+                        fontSize = 15.sp,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = "${routine.steps.size} sets • ~${estMinutes} min",
-                        color = WatchCyan,
-                        fontSize = 10.sp
+                        text = "${routine.steps.size} exercícios • ~${estMinutes} min",
+                        color = OneUiHealthGreen,
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Medium
                     )
                 }
             }
 
-            // Start Workout Button
+            // Botão Iniciar estilo Samsung Health
             item {
                 Chip(
                     onClick = onStartWorkout,
                     label = {
                         Text(
-                            text = "START WORKOUT",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.ExtraBold,
+                            text = "INICIAR",
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Bold,
                             color = Color.Black
                         )
                     },
@@ -136,27 +126,28 @@ fun RoutineDetailScreen(
                         )
                     },
                     colors = ChipDefaults.primaryChipColors(
-                        backgroundColor = WatchEmerald,
+                        backgroundColor = OneUiHealthGreen,
                         contentColor = Color.Black
                     ),
+                    shape = RoundedCornerShape(50),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
 
             item {
                 Text(
-                    text = "Tap any set to customize",
-                    color = WatchTextSecondary,
+                    text = "Toque no exercício para editar",
+                    color = OneUiTextSecondary,
                     fontSize = 9.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
 
-            // Steps list
+            // Lista de séries
             itemsIndexed(routine.steps, key = { _, step -> step.stepId }) { index, step ->
                 val ex = PresetRoutines.getExercise(step.exerciseId)
-                val unit = if (ex.mode == StepMode.TIMED) "sec" else "reps"
+                val unit = if (ex.mode == StepMode.TIMED) "s" else " reps"
 
                 Chip(
                     onClick = { onEditStep(step.stepId) },
@@ -166,7 +157,7 @@ fun RoutineDetailScreen(
                                 Text(
                                     text = "${index + 1}. ${ex.name}",
                                     color = Color.White,
-                                    fontSize = 11.sp,
+                                    fontSize = 12.sp,
                                     fontWeight = FontWeight.SemiBold,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
@@ -174,76 +165,83 @@ fun RoutineDetailScreen(
                                 )
                                 Icon(
                                     imageVector = Icons.Default.Edit,
-                                    contentDescription = "Edit Set",
-                                    tint = ex.dimension.accentColor(),
+                                    contentDescription = "Editar",
+                                    tint = OneUiTextSecondary,
                                     modifier = Modifier.size(12.dp)
                                 )
                             }
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                DimensionBadge(dimension = ex.dimension)
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text(
-                                    text = "${step.targetValue} $unit • ${step.restAfterSeconds}s rest",
-                                    color = WatchTextSecondary,
-                                    fontSize = 9.sp
-                                )
-                            }
+                            Text(
+                                text = "${step.targetValue}$unit • Descanso ${step.restAfterSeconds}s",
+                                color = OneUiHealthGreen,
+                                fontSize = 10.sp
+                            )
+                            Text(
+                                text = ex.subtitle,
+                                color = OneUiTextSecondary,
+                                fontSize = 8.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
                         }
                     },
                     colors = ChipDefaults.secondaryChipColors(
-                        backgroundColor = WatchSurface
+                        backgroundColor = OneUiCardSurface
                     ),
+                    shape = RoundedCornerShape(22.dp),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
 
-            // Add Step
+            // Adicionar Exercício
             item {
                 Chip(
                     onClick = onAddStep,
                     label = {
                         Text(
-                            text = "Add Exercise Set",
-                            fontSize = 11.sp
+                            text = "Adicionar Exercício",
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Medium
                         )
                     },
                     icon = {
                         Icon(
                             imageVector = Icons.Default.Add,
                             contentDescription = null,
-                            tint = WatchCyan,
+                            tint = OneUiBlue,
                             modifier = Modifier.size(16.dp)
                         )
                     },
                     colors = ChipDefaults.secondaryChipColors(
-                        backgroundColor = WatchSurface
+                        backgroundColor = OneUiCardSurface
                     ),
+                    shape = RoundedCornerShape(50),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
 
-            // Reset Preset or Delete Custom
+            // Restaurar Padrão ou Excluir
             item {
                 Chip(
                     onClick = onResetOrDelete,
                     label = {
                         Text(
-                            text = if (routine.isPreset) "Reset Default Sets" else "Delete Routine",
+                            text = if (routine.isPreset) "Restaurar Padrão" else "Excluir Treino",
                             fontSize = 11.sp,
-                            color = if (routine.isPreset) WatchTextSecondary else WatchCoral
+                            color = if (routine.isPreset) OneUiTextSecondary else OneUiHeartRed
                         )
                     },
                     icon = {
                         Icon(
                             imageVector = if (routine.isPreset) Icons.Default.Refresh else Icons.Default.Delete,
                             contentDescription = null,
-                            tint = if (routine.isPreset) WatchTextSecondary else WatchCoral,
+                            tint = if (routine.isPreset) OneUiTextSecondary else OneUiHeartRed,
                             modifier = Modifier.size(16.dp)
                         )
                     },
                     colors = ChipDefaults.secondaryChipColors(
-                        backgroundColor = WatchSurface
+                        backgroundColor = OneUiCardSurface
                     ),
+                    shape = RoundedCornerShape(50),
                     modifier = Modifier.fillMaxWidth()
                 )
             }

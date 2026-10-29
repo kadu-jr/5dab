@@ -78,65 +78,41 @@ class WorkoutRepository(private val context: Context) {
         val newRoutine = WorkoutRoutine(
             id = "custom_${UUID.randomUUID().toString().take(8)}",
             name = name,
-            subtitle = "Custom 5D Ab Routine",
-            description = "Custom 5-dimensional abdominal routine tailored on Galaxy Watch8 Classic.",
+            subtitle = "Treino Personalizado 5D Ab",
+            description = "Treino abdominal 5D personalizado no Galaxy Watch8 Classic.",
             isPreset = false,
             steps = listOf(
                 WorkoutStep(
                     stepId = UUID.randomUUID().toString().take(8),
                     exerciseId = PresetRoutines.EX_KNEE_TOUCH_CRUNCH,
-                    targetValue = 25,
-                    repPaceMs = 2200L,
-                    restAfterSeconds = 20,
-                    roundLabel = "Set 1"
-                ),
-                WorkoutStep(
-                    stepId = UUID.randomUUID().toString().take(8),
-                    exerciseId = PresetRoutines.EX_REVERSE_CRUNCH,
-                    targetValue = 25,
-                    repPaceMs = 2400L,
-                    restAfterSeconds = 20,
-                    roundLabel = "Set 2"
-                ),
-                WorkoutStep(
-                    stepId = UUID.randomUUID().toString().take(8),
-                    exerciseId = PresetRoutines.EX_ALTERNATE_HEEL_TOUCH,
-                    targetValue = 20,
+                    targetValue = 30,
                     repPaceMs = 2000L,
                     restAfterSeconds = 20,
-                    roundLabel = "Set 3"
+                    roundLabel = "Série 1"
                 ),
                 WorkoutStep(
                     stepId = UUID.randomUUID().toString().take(8),
-                    exerciseId = PresetRoutines.EX_RUSSIAN_TWIST,
-                    targetValue = 20,
+                    exerciseId = PresetRoutines.EX_STRAIGHT_CRUNCH,
+                    targetValue = 40,
+                    repPaceMs = 1800L,
+                    restAfterSeconds = 20,
+                    roundLabel = "Série 2"
+                ),
+                WorkoutStep(
+                    stepId = UUID.randomUUID().toString().take(8),
+                    exerciseId = PresetRoutines.EX_RUSSIAN_TWIST_5KG,
+                    targetValue = 30,
                     repPaceMs = 1900L,
                     restAfterSeconds = 20,
-                    roundLabel = "Set 4"
+                    roundLabel = "Série 3"
                 ),
                 WorkoutStep(
                     stepId = UUID.randomUUID().toString().take(8),
                     exerciseId = PresetRoutines.EX_PLANK_HOLD,
-                    targetValue = 45,
-                    repPaceMs = 1000L,
-                    restAfterSeconds = 15,
-                    roundLabel = "Set 5"
-                ),
-                WorkoutStep(
-                    stepId = UUID.randomUUID().toString().take(8),
-                    exerciseId = PresetRoutines.EX_LEFT_SIDE_PLANK,
-                    targetValue = 25,
-                    repPaceMs = 1000L,
-                    restAfterSeconds = 10,
-                    roundLabel = "Set 6"
-                ),
-                WorkoutStep(
-                    stepId = UUID.randomUUID().toString().take(8),
-                    exerciseId = PresetRoutines.EX_RIGHT_SIDE_PLANK,
-                    targetValue = 25,
+                    targetValue = 60,
                     repPaceMs = 1000L,
                     restAfterSeconds = 0,
-                    roundLabel = "Set 7"
+                    roundLabel = "Série 4"
                 )
             )
         )
@@ -180,7 +156,7 @@ class WorkoutRepository(private val context: Context) {
     }
 
     companion object {
-        private val KEY_ROUTINES = stringPreferencesKey("saved_routines_json")
+        private val KEY_ROUTINES = stringPreferencesKey("saved_routines_v2_json")
         private val KEY_SETTINGS = stringPreferencesKey("workout_settings_json")
         private val KEY_HISTORY = stringPreferencesKey("workout_history_json")
 

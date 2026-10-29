@@ -11,38 +11,38 @@ enum class AbDimension(
 ) {
     FLEXION(
         code = "1D",
-        shortTitle = "Flexion",
-        muscleFocus = "Upper & Lower Abs",
-        colorHex = 0xFF00E5FF
+        shortTitle = "Flexão Reto",
+        muscleFocus = "Abdômen Superior e Inferior",
+        colorHex = 0xFF2CE59B // Samsung Health Green
     ),
     LATERAL_FLEXION(
         code = "2D",
-        shortTitle = "Lateral Flexion",
-        muscleFocus = "Side Obliques",
-        colorHex = 0xFF00E676
+        shortTitle = "Flexão Lateral",
+        muscleFocus = "Oblíquos Laterais",
+        colorHex = 0xFF4CA2FF // One UI Blue
     ),
     ROTATION(
         code = "3D",
-        shortTitle = "Rotation",
-        muscleFocus = "Rotational Core",
-        colorHex = 0xFFFFB300
+        shortTitle = "Rotação",
+        muscleFocus = "Oblíquos e Core Rotacional",
+        colorHex = 0xFFFF9F1C // One UI Amber
     ),
     COUNTER_EXTENSION(
         code = "4D",
-        shortTitle = "Counter-Extension",
-        muscleFocus = "Deep Anti-Arch Core",
-        colorHex = 0xFFFF5252
+        shortTitle = "Estabilidade",
+        muscleFocus = "Core Profundo e Lombar",
+        colorHex = 0xFF00E5FF // One UI Cyan
     ),
     COUNTER_LATERAL_FLEXION(
         code = "5D",
-        shortTitle = "Counter-Lateral",
-        muscleFocus = "Anti-Tilt Lateral Core",
-        colorHex = 0xFFE040FB
+        shortTitle = "Anti-Lateral",
+        muscleFocus = "Estabilidade Oblíqua",
+        colorHex = 0xFFA970FF // One UI Violet
     ),
     RECOVERY(
         code = "REC",
-        shortTitle = "Stretch & Vacuum",
-        muscleFocus = "Transverse & Fascia",
+        shortTitle = "Alongamento",
+        muscleFocus = "Mobilidade e Fáscia",
         colorHex = 0xFF64FFDA
     )
 }
@@ -55,8 +55,8 @@ enum class StepMode {
 
 @Serializable
 enum class BezelWorkoutAction(val label: String) {
-    ADJUST_TARGET_OR_REST("Adjust Reps / Timer"),
-    NAVIGATE_STEPS("Prev / Next Set")
+    ADJUST_TARGET_OR_REST("Ajustar Reps / Tempo"),
+    NAVIGATE_STEPS("Avançar / Voltar Série")
 }
 
 @Serializable
@@ -67,7 +67,7 @@ data class ExerciseDefinition(
     val dimension: AbDimension,
     val mode: StepMode,
     val defaultTarget: Int,
-    val defaultRepPaceMs: Long = 2200L,
+    val defaultRepPaceMs: Long = 2000L,
     val metValue: Double = 4.5,
     val coachingCue: String
 )
@@ -77,9 +77,9 @@ data class WorkoutStep(
     val stepId: String,
     val exerciseId: String,
     val targetValue: Int,
-    val repPaceMs: Long = 2200L,
-    val restAfterSeconds: Int = 20,
-    val roundLabel: String = "Set 1"
+    val repPaceMs: Long = 2000L,
+    val restAfterSeconds: Int = 25,
+    val roundLabel: String = "Série 1"
 )
 
 @Serializable

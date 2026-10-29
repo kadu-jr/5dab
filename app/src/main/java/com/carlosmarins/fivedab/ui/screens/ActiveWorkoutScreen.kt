@@ -19,7 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.PlayArrow
-import com.carlosmarins.fivedab.ui.components.WatchIcons
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,19 +33,20 @@ import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.ButtonDefaults
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
+import com.carlosmarins.fivedab.data.BezelWorkoutAction
 import com.carlosmarins.fivedab.data.StepMode
 import com.carlosmarins.fivedab.data.WorkoutSettings
 import com.carlosmarins.fivedab.health.LiveBiometricsState
 import com.carlosmarins.fivedab.ui.components.CircularWorkoutRing
-import com.carlosmarins.fivedab.ui.components.DimensionBadge
+import com.carlosmarins.fivedab.ui.components.WatchIcons
 import com.carlosmarins.fivedab.ui.components.bezelStepController
-import com.carlosmarins.fivedab.ui.theme.WatchAmber
-import com.carlosmarins.fivedab.ui.theme.WatchCoral
-import com.carlosmarins.fivedab.ui.theme.WatchCyan
-import com.carlosmarins.fivedab.ui.theme.WatchEmerald
-import com.carlosmarins.fivedab.ui.theme.WatchSurface
-import com.carlosmarins.fivedab.ui.theme.WatchTextSecondary
-import com.carlosmarins.fivedab.ui.theme.accentColor
+import com.carlosmarins.fivedab.ui.theme.OneUiBlue
+import com.carlosmarins.fivedab.ui.theme.OneUiButtonSurface
+import com.carlosmarins.fivedab.ui.theme.OneUiCalorieOrange
+import com.carlosmarins.fivedab.ui.theme.OneUiCardSurface
+import com.carlosmarins.fivedab.ui.theme.OneUiHealthGreen
+import com.carlosmarins.fivedab.ui.theme.OneUiHeartRed
+import com.carlosmarins.fivedab.ui.theme.OneUiTextSecondary
 import com.carlosmarins.fivedab.viewmodel.ActiveWorkoutUiState
 import com.carlosmarins.fivedab.viewmodel.WorkoutPhase
 import java.util.Locale
@@ -83,9 +83,10 @@ fun ActiveWorkoutScreen(
     }
 
     val ringColor = when (state.phase) {
-        WorkoutPhase.PREP -> WatchAmber
-        WorkoutPhase.REST -> WatchEmerald
-        else -> state.currentExercise.dimension.accentColor()
+        WorkoutPhase.PREP -> OneUiCalorieOrange
+        WorkoutPhase.REST -> OneUiBlue
+        WorkoutPhase.PAUSED -> OneUiCalorieOrange
+        else -> OneUiHealthGreen
     }
 
     Box(
@@ -95,7 +96,7 @@ fun ActiveWorkoutScreen(
             .background(Color.Black)
             .bezelStepController(onRotaryDelta = onBezelScroll)
     ) {
-        // Dual concentric circular progress ring around the Galaxy Watch8 Classic display
+        // Samsung Health One UI Circular Progress Ring
         CircularWorkoutRing(
             setProgressFraction = setFraction,
             overallRoutineFraction = overallFraction,
@@ -109,14 +110,30 @@ fun ActiveWorkoutScreen(
                 .fillMaxSize()
                 .padding(horizontal = 18.dp, vertical = 14.dp)
         ) {
-            // Top Status Bar: Set X/Y + Live Heart Rate + Calories
+            // Top Status Bar (Samsung Health style: Série + Tempo + BPM/kcal)
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = "SET ${state.currentStepIndex + 1}/$totalSteps • ${formatMinutesSeconds(state.elapsedWorkoutSeconds)}",
-                    color = WatchTextSecondary,
-                    fontSize = 9.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Série ${state.currentStepIndex + 1}/$totalSteps",
+                        color = OneUiTextSecondary,
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Text(
+                        text = " • ",
+                        color = OneUiTextSecondary,
+                        fontSize = 10.sp
+                    )
+                    Text(
+                        text = formatMinutesSeconds(state.elapsedWorkoutSeconds),
+                        color = OneUiHealthGreen,
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
                 Spacer(modifier = Modifier.height(2.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -124,8 +141,8 @@ fun ActiveWorkoutScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Favorite,
-                        contentDescription = "Heart Rate",
-                        tint = WatchCoral,
+                        contentDescription = "BPM",
+                        tint = OneUiHeartRed,
                         modifier = Modifier.size(11.dp)
                     )
                     Spacer(modifier = Modifier.width(2.dp))
@@ -137,13 +154,13 @@ fun ActiveWorkoutScreen(
                         },
                         color = Color.White,
                         fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.SemiBold
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Icon(
                         imageVector = WatchIcons.Fire,
-                        contentDescription = "Calories",
-                        tint = WatchAmber,
+                        contentDescription = "kcal",
+                        tint = OneUiCalorieOrange,
                         modifier = Modifier.size(11.dp)
                     )
                     Spacer(modifier = Modifier.width(2.dp))
@@ -151,7 +168,7 @@ fun ActiveWorkoutScreen(
                         text = String.format(Locale.US, "%.0f kcal", biometrics.caloriesKcal),
                         color = Color.White,
                         fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.SemiBold
                     )
                 }
             }
@@ -161,24 +178,29 @@ fun ActiveWorkoutScreen(
                 WorkoutPhase.PREP -> {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "GET READY",
-                            color = WatchAmber,
+                            text = "PREPARE-SE",
+                            color = OneUiCalorieOrange,
                             fontSize = 11.sp,
-                            fontWeight = FontWeight.ExtraBold
+                            fontWeight = FontWeight.Bold
                         )
                         Text(
                             text = "${state.prepRemainingSeconds}",
                             color = Color.White,
-                            fontSize = 34.sp,
-                            fontWeight = FontWeight.Black
+                            fontSize = 36.sp,
+                            fontWeight = FontWeight.Bold
                         )
-                        DimensionBadge(dimension = state.currentExercise.dimension)
-                        Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = state.currentExercise.name,
                             color = Color.White,
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Text(
+                            text = state.currentExercise.subtitle,
+                            color = OneUiTextSecondary,
+                            fontSize = 9.sp,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -188,29 +210,29 @@ fun ActiveWorkoutScreen(
                 WorkoutPhase.REST -> {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "REST • ROTATE BEZEL ±5s",
-                            color = WatchEmerald,
-                            fontSize = 9.sp,
+                            text = "DESCANSO",
+                            color = OneUiBlue,
+                            fontSize = 10.sp,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "${state.restRemainingSeconds}s",
+                            text = formatMinutesSeconds(state.restRemainingSeconds),
                             color = Color.White,
-                            fontSize = 32.sp,
-                            fontWeight = FontWeight.Black
+                            fontSize = 34.sp,
+                            fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "NEXT: ${state.currentExercise.name}",
-                            color = WatchCyan,
+                            text = "A seguir: ${state.currentExercise.name}",
+                            color = OneUiHealthGreen,
                             fontSize = 11.sp,
-                            fontWeight = FontWeight.Bold,
+                            fontWeight = FontWeight.SemiBold,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
-                        val nextUnit = if (state.currentExercise.mode == StepMode.TIMED) "sec" else "reps"
+                        val nextUnit = if (state.currentExercise.mode == StepMode.TIMED) "s" else " reps"
                         Text(
-                            text = "${state.currentStep.targetValue} $nextUnit • ${state.currentExercise.dimension.shortTitle}",
-                            color = WatchTextSecondary,
+                            text = "${state.currentStep.targetValue}$nextUnit • Gire a coroa ±5s",
+                            color = OneUiTextSecondary,
                             fontSize = 9.sp
                         )
                     }
@@ -219,44 +241,52 @@ fun ActiveWorkoutScreen(
                 WorkoutPhase.PAUSED -> {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "WORKOUT PAUSED",
-                            color = WatchAmber,
+                            text = "PAUSADO",
+                            color = OneUiCalorieOrange,
                             fontSize = 12.sp,
-                            fontWeight = FontWeight.ExtraBold
+                            fontWeight = FontWeight.Bold
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = state.currentExercise.name,
                             color = Color.White,
-                            fontSize = 11.sp,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.SemiBold,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
                         Text(
-                            text = "${state.totalRepsAccumulated} reps • ${state.completedSetsCount} sets done",
-                            color = WatchTextSecondary,
+                            text = "${state.totalRepsAccumulated} reps • ${state.completedSetsCount} séries feitas",
+                            color = OneUiTextSecondary,
                             fontSize = 10.sp
                         )
                     }
                 }
 
                 else -> {
-                    // ACTIVE_SET
+                    // ACTIVE_SET (Samsung Health clean workout display)
                     val isTimed = state.currentExercise.mode == StepMode.TIMED
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
-                            .clip(RoundedCornerShape(12.dp))
+                            .clip(RoundedCornerShape(14.dp))
                             .clickable(enabled = !isTimed) { onManualRepTap() }
                             .padding(horizontal = 6.dp, vertical = 2.dp)
                     ) {
-                        DimensionBadge(dimension = state.currentExercise.dimension)
-                        Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = state.currentExercise.name,
                             color = Color.White,
-                            fontSize = 12.sp,
+                            fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Text(
+                            text = state.currentExercise.subtitle,
+                            color = OneUiTextSecondary,
+                            fontSize = 9.sp,
                             textAlign = TextAlign.Center,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -266,14 +296,14 @@ fun ActiveWorkoutScreen(
                         if (isTimed) {
                             val remainingSecs = (state.currentTarget - state.currentProgress).coerceAtLeast(0)
                             Text(
-                                text = "${remainingSecs}s",
-                                color = ringColor,
-                                fontSize = 32.sp,
-                                fontWeight = FontWeight.Black
+                                text = formatMinutesSeconds(remainingSecs),
+                                color = OneUiHealthGreen,
+                                fontSize = 34.sp,
+                                fontWeight = FontWeight.Bold
                             )
                             Text(
-                                text = "Hold • Bezel ±5s",
-                                color = WatchTextSecondary,
+                                text = "Isometria • Coroa ±5s",
+                                color = OneUiTextSecondary,
                                 fontSize = 9.sp
                             )
                         } else {
@@ -283,15 +313,15 @@ fun ActiveWorkoutScreen(
                             ) {
                                 Text(
                                     text = "${state.currentProgress}",
-                                    color = ringColor,
-                                    fontSize = 32.sp,
-                                    fontWeight = FontWeight.Black
+                                    color = OneUiHealthGreen,
+                                    fontSize = 34.sp,
+                                    fontWeight = FontWeight.Bold
                                 )
                                 Text(
                                     text = " / ${state.currentTarget}",
-                                    color = WatchTextSecondary,
-                                    fontSize = 15.sp,
-                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White,
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.SemiBold,
                                     modifier = Modifier.padding(bottom = 4.dp)
                                 )
                             }
@@ -299,13 +329,13 @@ fun ActiveWorkoutScreen(
                                 text = if (settings.autoPaceReps) {
                                     String.format(
                                         Locale.US,
-                                        "Auto %.1fs/rep • Tap +1",
+                                        "Ritmo %.1fs • Toque +1",
                                         state.currentStep.repPaceMs / 1000.0
                                     )
                                 } else {
-                                    "Manual Mode • Tap +1 Rep"
+                                    "Manual • Toque +1 rep"
                                 },
-                                color = WatchTextSecondary,
+                                color = OneUiTextSecondary,
                                 fontSize = 9.sp
                             )
                         }
@@ -313,7 +343,7 @@ fun ActiveWorkoutScreen(
                 }
             }
 
-            // Bottom Controls Row
+            // Bottom One UI Watch Controls Row
             if (state.phase == WorkoutPhase.PAUSED) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -321,36 +351,36 @@ fun ActiveWorkoutScreen(
                 ) {
                     Button(
                         onClick = onFinishWorkout,
-                        colors = ButtonDefaults.secondaryButtonColors(backgroundColor = WatchCoral),
+                        colors = ButtonDefaults.secondaryButtonColors(backgroundColor = OneUiHeartRed),
                         modifier = Modifier.size(36.dp)
                     ) {
                         Icon(
                             imageVector = WatchIcons.Stop,
-                            contentDescription = "End Workout",
-                            tint = Color.Black,
+                            contentDescription = "Encerrar",
+                            tint = Color.White,
                             modifier = Modifier.size(18.dp)
                         )
                     }
                     Button(
                         onClick = onTogglePause,
-                        colors = ButtonDefaults.primaryButtonColors(backgroundColor = WatchEmerald),
+                        colors = ButtonDefaults.primaryButtonColors(backgroundColor = OneUiHealthGreen),
                         modifier = Modifier.size(40.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.PlayArrow,
-                            contentDescription = "Resume Workout",
+                            contentDescription = "Retomar",
                             tint = Color.Black,
                             modifier = Modifier.size(22.dp)
                         )
                     }
                     Button(
                         onClick = onCompleteOrSkipStep,
-                        colors = ButtonDefaults.secondaryButtonColors(backgroundColor = WatchSurface),
+                        colors = ButtonDefaults.secondaryButtonColors(backgroundColor = OneUiButtonSurface),
                         modifier = Modifier.size(36.dp)
                     ) {
                         Icon(
                             imageVector = WatchIcons.SkipNext,
-                            contentDescription = "Skip Set",
+                            contentDescription = "Pular Série",
                             tint = Color.White,
                             modifier = Modifier.size(18.dp)
                         )
@@ -363,35 +393,35 @@ fun ActiveWorkoutScreen(
                 ) {
                     Button(
                         onClick = onTogglePause,
-                        colors = ButtonDefaults.secondaryButtonColors(backgroundColor = WatchSurface),
+                        colors = ButtonDefaults.secondaryButtonColors(backgroundColor = OneUiButtonSurface),
                         modifier = Modifier.size(34.dp)
                     ) {
                         Icon(
                             imageVector = WatchIcons.Pause,
-                            contentDescription = "Pause",
+                            contentDescription = "Pausar",
                             tint = Color.White,
                             modifier = Modifier.size(16.dp)
                         )
                     }
 
-                    // Bezel Mode Quick Pill
+                    // Bezel Mode Quick Pill (One UI Pill)
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
                             .clip(CircleShape)
-                            .background(WatchSurface)
+                            .background(OneUiCardSurface)
                             .clickable { onCycleBezelMode() }
-                            .padding(horizontal = 8.dp, vertical = 5.dp)
+                            .padding(horizontal = 9.dp, vertical = 5.dp)
                     ) {
                         Text(
-                            text = if (settings.bezelWorkoutAction == com.carlosmarins.fivedab.data.BezelWorkoutAction.ADJUST_TARGET_OR_REST) {
-                                "Bezel: ±Target"
+                            text = if (settings.bezelWorkoutAction == BezelWorkoutAction.ADJUST_TARGET_OR_REST) {
+                                "Coroa: ±Meta"
                             } else {
-                                "Bezel: Skip"
+                                "Coroa: Pular"
                             },
-                            color = WatchCyan,
+                            color = OneUiBlue,
                             fontSize = 8.sp,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.SemiBold
                         )
                     }
 
@@ -409,7 +439,7 @@ fun ActiveWorkoutScreen(
                             } else {
                                 Icons.Default.Check
                             },
-                            contentDescription = "Complete Set / Skip Rest",
+                            contentDescription = "Concluir Série / Pular",
                             tint = Color.Black,
                             modifier = Modifier.size(16.dp)
                         )
@@ -426,16 +456,16 @@ fun ActiveWorkoutScreen(
                     .align(Alignment.TopCenter)
                     .padding(top = 28.dp)
                     .background(
-                        color = WatchSurface.copy(alpha = 0.94f),
+                        color = OneUiCardSurface.copy(alpha = 0.96f),
                         shape = RoundedCornerShape(50)
                     )
                     .padding(horizontal = 10.dp, vertical = 3.dp)
             ) {
                 Text(
                     text = toastText,
-                    color = WatchCyan,
+                    color = OneUiHealthGreen,
                     fontSize = 10.sp,
-                    fontWeight = FontWeight.ExtraBold
+                    fontWeight = FontWeight.Bold
                 )
             }
         }
@@ -445,5 +475,5 @@ fun ActiveWorkoutScreen(
 fun formatMinutesSeconds(totalSeconds: Int): String {
     val mins = totalSeconds / 60
     val secs = totalSeconds % 60
-    return String.format(Locale.US, "%d:%02d", mins, secs)
+    return String.format(Locale.US, "%02d:%02d", mins, secs)
 }

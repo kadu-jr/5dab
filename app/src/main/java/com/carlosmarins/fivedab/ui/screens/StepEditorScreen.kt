@@ -11,11 +11,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
-import com.carlosmarins.fivedab.ui.components.WatchIcons
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -45,13 +45,14 @@ import androidx.wear.compose.material.TimeText
 import com.carlosmarins.fivedab.data.PresetRoutines
 import com.carlosmarins.fivedab.data.StepMode
 import com.carlosmarins.fivedab.data.WorkoutStep
-import com.carlosmarins.fivedab.ui.components.DimensionBadge
+import com.carlosmarins.fivedab.ui.components.WatchIcons
 import com.carlosmarins.fivedab.ui.components.bezelScrollableList
-import com.carlosmarins.fivedab.ui.theme.WatchCoral
-import com.carlosmarins.fivedab.ui.theme.WatchCyan
-import com.carlosmarins.fivedab.ui.theme.WatchEmerald
-import com.carlosmarins.fivedab.ui.theme.WatchSurface
-import com.carlosmarins.fivedab.ui.theme.WatchTextSecondary
+import com.carlosmarins.fivedab.ui.theme.OneUiBlue
+import com.carlosmarins.fivedab.ui.theme.OneUiButtonSurface
+import com.carlosmarins.fivedab.ui.theme.OneUiCardSurface
+import com.carlosmarins.fivedab.ui.theme.OneUiHealthGreen
+import com.carlosmarins.fivedab.ui.theme.OneUiHeartRed
+import com.carlosmarins.fivedab.ui.theme.OneUiTextSecondary
 import java.util.Locale
 
 @Composable
@@ -107,8 +108,6 @@ fun StepEditorScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    DimensionBadge(dimension = exercise.dimension)
-                    Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = exercise.name,
                         color = Color.White,
@@ -116,29 +115,37 @@ fun StepEditorScreen(
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center
                     )
+                    Text(
+                        text = exercise.subtitle,
+                        color = OneUiTextSecondary,
+                        fontSize = 9.sp,
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
 
-            // Change Exercise Button
+            // Trocar Exercício
             item {
                 Chip(
                     onClick = { showExercisePicker = true },
                     label = {
                         Text(
-                            text = "Change Exercise",
+                            text = "Trocar Exercício",
                             fontSize = 11.sp,
-                            color = WatchCyan
+                            color = OneUiBlue,
+                            fontWeight = FontWeight.SemiBold
                         )
                     },
-                    colors = ChipDefaults.secondaryChipColors(backgroundColor = WatchSurface),
+                    colors = ChipDefaults.secondaryChipColors(backgroundColor = OneUiCardSurface),
+                    shape = RoundedCornerShape(50),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
 
-            // Target Reps or Seconds Adjuster
+            // Repetições ou Duração
             item {
                 AdjusterRow(
-                    title = if (isTimed) "Hold Duration" else "Target Reps",
+                    title = if (isTimed) "Duração" else "Repetições",
                     valueText = if (isTimed) "${targetValue}s" else "$targetValue reps",
                     onDecrement = {
                         val delta = if (isTimed) 5 else 1
@@ -151,12 +158,12 @@ fun StepEditorScreen(
                 )
             }
 
-            // Rep Cadence Speed (only for Rep-based exercises)
+            // Ritmo Automático por Repetição
             if (!isTimed) {
                 item {
                     val secsPerRep = String.format(Locale.US, "%.1fs/rep", repPaceMs / 1000.0)
                     AdjusterRow(
-                        title = "Auto-Pace Speed",
+                        title = "Ritmo por Repetição",
                         valueText = secsPerRep,
                         onDecrement = {
                             repPaceMs = (repPaceMs - 200L).coerceAtLeast(1000L)
@@ -168,10 +175,10 @@ fun StepEditorScreen(
                 }
             }
 
-            // Rest Timer Adjuster
+            // Descanso Após Série
             item {
                 AdjusterRow(
-                    title = "Rest After Set",
+                    title = "Descanso Após Série",
                     valueText = "${restSeconds}s",
                     onDecrement = {
                         restSeconds = (restSeconds - 5).coerceAtLeast(0)
@@ -182,7 +189,7 @@ fun StepEditorScreen(
                 )
             }
 
-            // Save Changes Button
+            // Salvar
             item {
                 Chip(
                     onClick = {
@@ -190,7 +197,7 @@ fun StepEditorScreen(
                     },
                     label = {
                         Text(
-                            text = "Save Set",
+                            text = "Salvar",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.Black
@@ -204,9 +211,10 @@ fun StepEditorScreen(
                         )
                     },
                     colors = ChipDefaults.primaryChipColors(
-                        backgroundColor = WatchEmerald,
+                        backgroundColor = OneUiHealthGreen,
                         contentColor = Color.Black
                     ),
+                    shape = RoundedCornerShape(50),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -217,20 +225,21 @@ fun StepEditorScreen(
                         onClick = onDelete,
                         label = {
                             Text(
-                                text = "Remove Set",
+                                text = "Remover Série",
                                 fontSize = 11.sp,
-                                color = WatchCoral
+                                color = OneUiHeartRed
                             )
                         },
                         icon = {
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = null,
-                                tint = WatchCoral,
+                                tint = OneUiHeartRed,
                                 modifier = Modifier.size(16.dp)
                             )
                         },
-                        colors = ChipDefaults.secondaryChipColors(backgroundColor = WatchSurface),
+                        colors = ChipDefaults.secondaryChipColors(backgroundColor = OneUiCardSurface),
+                        shape = RoundedCornerShape(50),
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -252,7 +261,7 @@ private fun AdjusterRow(
     ) {
         Text(
             text = title,
-            color = WatchTextSecondary,
+            color = OneUiTextSecondary,
             fontSize = 10.sp
         )
         Spacer(modifier = Modifier.height(2.dp))
@@ -263,12 +272,12 @@ private fun AdjusterRow(
         ) {
             Button(
                 onClick = onDecrement,
-                colors = ButtonDefaults.secondaryButtonColors(backgroundColor = WatchSurface),
+                colors = ButtonDefaults.secondaryButtonColors(backgroundColor = OneUiButtonSurface),
                 modifier = Modifier.size(30.dp)
             ) {
                 Icon(
                     imageVector = WatchIcons.Remove,
-                    contentDescription = "Decrease $title",
+                    contentDescription = "Diminuir $title",
                     modifier = Modifier.size(16.dp)
                 )
             }
@@ -277,17 +286,17 @@ private fun AdjusterRow(
                 text = valueText,
                 color = Color.White,
                 fontSize = 14.sp,
-                fontWeight = FontWeight.ExtraBold
+                fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.width(12.dp))
             Button(
                 onClick = onIncrement,
-                colors = ButtonDefaults.secondaryButtonColors(backgroundColor = WatchSurface),
+                colors = ButtonDefaults.secondaryButtonColors(backgroundColor = OneUiButtonSurface),
                 modifier = Modifier.size(30.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Increase $title",
+                    contentDescription = "Aumentar $title",
                     modifier = Modifier.size(16.dp)
                 )
             }
@@ -321,8 +330,8 @@ fun ExerciseCatalogPickerScreen(
         ) {
             item {
                 Text(
-                    text = "5D Exercise Catalog",
-                    color = WatchCyan,
+                    text = "Escolher Exercício",
+                    color = OneUiHealthGreen,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -330,29 +339,26 @@ fun ExerciseCatalogPickerScreen(
 
             items(PresetRoutines.exerciseCatalog, key = { it.id }) { ex ->
                 val isSelected = ex.id == currentExerciseId
-                val unit = if (ex.mode == StepMode.TIMED) "sec" else "reps"
+                val unit = if (ex.mode == StepMode.TIMED) "s" else " reps"
                 Chip(
                     onClick = { onSelectExercise(ex) },
                     label = {
                         Column {
                             Text(
                                 text = ex.name,
-                                color = if (isSelected) WatchEmerald else Color.White,
+                                color = if (isSelected) OneUiHealthGreen else Color.White,
                                 fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.SemiBold
                             )
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                DimensionBadge(dimension = ex.dimension)
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text(
-                                    text = "${ex.defaultTarget} $unit",
-                                    color = WatchTextSecondary,
-                                    fontSize = 9.sp
-                                )
-                            }
+                            Text(
+                                text = "${ex.defaultTarget}$unit • ${ex.subtitle}",
+                                color = OneUiTextSecondary,
+                                fontSize = 9.sp
+                            )
                         }
                     },
-                    colors = ChipDefaults.secondaryChipColors(backgroundColor = WatchSurface),
+                    colors = ChipDefaults.secondaryChipColors(backgroundColor = OneUiCardSurface),
+                    shape = RoundedCornerShape(20.dp),
                     modifier = Modifier.fillMaxWidth()
                 )
             }

@@ -31,11 +31,10 @@ import androidx.wear.compose.material.TimeText
 import com.carlosmarins.fivedab.data.CompletedWorkoutSession
 import com.carlosmarins.fivedab.data.WorkoutRepository
 import com.carlosmarins.fivedab.ui.components.bezelScrollableList
-import com.carlosmarins.fivedab.ui.theme.WatchAmber
-import com.carlosmarins.fivedab.ui.theme.WatchCyan
-import com.carlosmarins.fivedab.ui.theme.WatchEmerald
-import com.carlosmarins.fivedab.ui.theme.WatchSurface
-import com.carlosmarins.fivedab.ui.theme.WatchTextSecondary
+import com.carlosmarins.fivedab.ui.theme.OneUiCalorieOrange
+import com.carlosmarins.fivedab.ui.theme.OneUiCardSurface
+import com.carlosmarins.fivedab.ui.theme.OneUiHealthGreen
+import com.carlosmarins.fivedab.ui.theme.OneUiTextSecondary
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -50,7 +49,7 @@ fun HistoryScreen(
     val streak = WorkoutRepository.computeStreakDays(history)
     val totalRepsAllTime = history.sumOf { it.totalRepsCompleted }
     val totalKcalAllTime = history.sumOf { it.caloriesBurnedKcal }
-    val formatter = DateTimeFormatter.ofPattern("MMM d, HH:mm", Locale.US)
+    val formatter = DateTimeFormatter.ofPattern("dd/MM HH:mm", Locale.US)
 
     Scaffold(
         timeText = { TimeText() },
@@ -76,19 +75,19 @@ fun HistoryScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "5D AB HISTORY",
-                        color = WatchCyan,
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.ExtraBold
+                        text = "Histórico",
+                        color = Color.White,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "🔥 $streak-day streak • $totalRepsAllTime total reps",
-                        color = WatchAmber,
+                        text = "$streak dias seguidos • $totalRepsAllTime reps",
+                        color = OneUiHealthGreen,
                         fontSize = 10.sp
                     )
                     Text(
-                        text = String.format(Locale.US, "%.0f kcal total burned", totalKcalAllTime),
-                        color = WatchTextSecondary,
+                        text = String.format(Locale.US, "%.0f kcal acumuladas", totalKcalAllTime),
+                        color = OneUiTextSecondary,
                         fontSize = 9.sp
                     )
                 }
@@ -100,18 +99,19 @@ fun HistoryScreen(
                     label = {
                         Column {
                             Text(
-                                text = "Sync Permissions",
+                                text = "Sincronizar Samsung Health",
                                 fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.SemiBold
                             )
                             Text(
-                                text = "Samsung Health & Health Connect",
+                                text = "Permissões Health Connect",
                                 fontSize = 9.sp,
-                                color = WatchTextSecondary
+                                color = OneUiTextSecondary
                             )
                         }
                     },
-                    colors = ChipDefaults.secondaryChipColors(backgroundColor = WatchSurface),
+                    colors = ChipDefaults.secondaryChipColors(backgroundColor = OneUiCardSurface),
+                    shape = RoundedCornerShape(50),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -119,8 +119,8 @@ fun HistoryScreen(
             if (history.isEmpty()) {
                 item {
                     Text(
-                        text = "No workouts recorded yet.\nStart a 5D Ab routine to track reps, HR & calories!",
-                        color = WatchTextSecondary,
+                        text = "Nenhum treino registrado ainda.",
+                        color = OneUiTextSecondary,
                         fontSize = 10.sp,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
@@ -137,8 +137,8 @@ fun HistoryScreen(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(WatchSurface, RoundedCornerShape(12.dp))
-                            .padding(horizontal = 10.dp, vertical = 7.dp)
+                            .background(OneUiCardSurface, RoundedCornerShape(18.dp))
+                            .padding(horizontal = 12.dp, vertical = 8.dp)
                     ) {
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
@@ -148,23 +148,23 @@ fun HistoryScreen(
                                 text = item.routineName,
                                 color = Color.White,
                                 fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.SemiBold
                             )
                             Text(
                                 text = if (item.syncedToHealth) "✓ Health" else "Local",
-                                color = if (item.syncedToHealth) WatchEmerald else WatchTextSecondary,
+                                color = if (item.syncedToHealth) OneUiHealthGreen else OneUiTextSecondary,
                                 fontSize = 9.sp
                             )
                         }
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = "${item.totalRepsCompleted} reps • ${item.totalHoldSecondsCompleted}s hold • ${String.format(Locale.US, "%.0f", item.caloriesBurnedKcal)} kcal",
-                            color = WatchCyan,
+                            text = "${item.totalRepsCompleted} reps • ${item.totalHoldSecondsCompleted}s • ${String.format(Locale.US, "%.0f", item.caloriesBurnedKcal)} kcal",
+                            color = OneUiCalorieOrange,
                             fontSize = 9.sp
                         )
                         Text(
-                            text = "$dateStr • Avg ${if (item.avgHeartRateBpm > 0) "${item.avgHeartRateBpm} bpm" else "--"}",
-                            color = WatchTextSecondary,
+                            text = "$dateStr • FC méd ${if (item.avgHeartRateBpm > 0) "${item.avgHeartRateBpm} bpm" else "--"}",
+                            color = OneUiTextSecondary,
                             fontSize = 8.sp
                         )
                     }

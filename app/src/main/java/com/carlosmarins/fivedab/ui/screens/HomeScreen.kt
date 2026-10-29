@@ -1,6 +1,7 @@
 package com.carlosmarins.fivedab.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,10 +20,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
-import com.carlosmarins.fivedab.ui.components.WatchIcons
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -33,8 +34,6 @@ import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.ButtonDefaults
-import androidx.wear.compose.material.Card
-import androidx.wear.compose.material.CardDefaults
 import androidx.wear.compose.material.Chip
 import androidx.wear.compose.material.ChipDefaults
 import androidx.wear.compose.material.Icon
@@ -45,17 +44,14 @@ import androidx.wear.compose.material.TimeText
 import androidx.wear.compose.material.Vignette
 import androidx.wear.compose.material.VignettePosition
 import com.carlosmarins.fivedab.data.CompletedWorkoutSession
-import com.carlosmarins.fivedab.data.PresetRoutines
 import com.carlosmarins.fivedab.data.WorkoutRepository
 import com.carlosmarins.fivedab.data.WorkoutRoutine
-import com.carlosmarins.fivedab.ui.components.FiveDPentagonRadar
+import com.carlosmarins.fivedab.ui.components.WatchIcons
 import com.carlosmarins.fivedab.ui.components.bezelScrollableList
-import com.carlosmarins.fivedab.ui.theme.WatchAmber
-import com.carlosmarins.fivedab.ui.theme.WatchCyan
-import com.carlosmarins.fivedab.ui.theme.WatchEmerald
-import com.carlosmarins.fivedab.ui.theme.WatchSurface
-import com.carlosmarins.fivedab.ui.theme.WatchSurfaceVariant
-import com.carlosmarins.fivedab.ui.theme.WatchTextSecondary
+import com.carlosmarins.fivedab.ui.theme.OneUiBlue
+import com.carlosmarins.fivedab.ui.theme.OneUiCardSurface
+import com.carlosmarins.fivedab.ui.theme.OneUiHealthGreen
+import com.carlosmarins.fivedab.ui.theme.OneUiTextSecondary
 
 @Composable
 fun HomeScreen(
@@ -80,7 +76,7 @@ fun HomeScreen(
             state = listState,
             contentPadding = PaddingValues(
                 top = 28.dp,
-                bottom = 36.dp,
+                bottom = 38.dp,
                 start = 10.dp,
                 end = 10.dp
             ),
@@ -90,111 +86,93 @@ fun HomeScreen(
                 .background(Color.Black)
                 .bezelScrollableList(listState)
         ) {
-            // Header with 5D Pentagon & Streak
+            // One UI Watch Header
             item {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 2.dp)
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        FiveDPentagonRadar(
-                            activeDimensions = com.carlosmarins.fivedab.data.AbDimension.entries,
-                            size = 28.dp
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = "5D AB WORKOUT",
-                            color = WatchCyan,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.ExtraBold
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = "5D Ab",
+                        color = OneUiHealthGreen,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                     Text(
                         text = if (totalSessions > 0) {
-                            "🔥 $streakDays-day streak • $totalSessions done"
+                            "$streakDays dias seguidos • $totalSessions treinos"
                         } else {
-                            "Galaxy Watch8 Classic Edition"
+                            "Treinos da Semana"
                         },
-                        color = if (streakDays > 0) WatchAmber else WatchTextSecondary,
+                        color = OneUiTextSecondary,
                         fontSize = 10.sp
                     )
                 }
             }
 
-            // Routine Cards
+            // One UI Pill Cards for Each Day (Seg, Ter, Qua, Qui, Sex)
             items(routines, key = { it.id }) { routine ->
-                val dimensions = routine.steps
-                    .map { PresetRoutines.getExercise(it.exerciseId).dimension }
-                    .distinct()
-
-                Card(
-                    onClick = { onSelectRoutine(routine.id) },
-                    backgroundPainter = CardDefaults.cardBackgroundPainter(
-                        startBackgroundColor = WatchSurface,
-                        endBackgroundColor = WatchSurfaceVariant
-                    ),
-                    contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
-                    modifier = Modifier.fillMaxWidth()
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(24.dp))
+                        .background(OneUiCardSurface)
+                        .clickable { onSelectRoutine(routine.id) }
+                        .padding(start = 14.dp, end = 8.dp, top = 9.dp, bottom = 9.dp)
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = routine.name,
+                            color = Color.White,
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Text(
+                            text = routine.subtitle,
+                            color = OneUiHealthGreen,
+                            fontSize = 9.sp,
+                            fontWeight = FontWeight.Medium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Text(
+                            text = "${routine.steps.size} exercícios • Editar",
+                            color = OneUiTextSecondary,
+                            fontSize = 9.sp
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Button(
+                        onClick = { onQuickStartRoutine(routine.id) },
+                        colors = ButtonDefaults.primaryButtonColors(
+                            backgroundColor = OneUiHealthGreen,
+                            contentColor = Color.Black
+                        ),
+                        modifier = Modifier.size(34.dp)
                     ) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = routine.name,
-                                color = Color.White,
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.Bold,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                            Text(
-                                text = "${routine.steps.size} sets • ${dimensions.size}D axes",
-                                color = WatchCyan,
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                            Text(
-                                text = routine.subtitle,
-                                color = WatchTextSecondary,
-                                fontSize = 9.sp,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Button(
-                            onClick = { onQuickStartRoutine(routine.id) },
-                            colors = ButtonDefaults.primaryButtonColors(
-                                backgroundColor = WatchEmerald,
-                                contentColor = Color.Black
-                            ),
-                            modifier = Modifier.size(32.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.PlayArrow,
-                                contentDescription = "Start ${routine.name}",
-                                modifier = Modifier.size(18.dp)
-                            )
-                        }
+                        Icon(
+                            imageVector = Icons.Default.PlayArrow,
+                            contentDescription = "Iniciar ${routine.name}",
+                            modifier = Modifier.size(18.dp)
+                        )
                     }
                 }
             }
 
-            // Create Custom 5D Routine
+            // Novo Treino Customizado
             item {
                 Chip(
                     onClick = onCreateCustomRoutine,
                     label = {
                         Text(
-                            text = "New Custom Routine",
+                            text = "Novo Treino",
                             fontSize = 12.sp,
-                            fontWeight = FontWeight.SemiBold
+                            fontWeight = FontWeight.Medium
                         )
                     },
                     icon = {
@@ -202,70 +180,74 @@ fun HomeScreen(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .size(22.dp)
-                                .background(WatchCyan.copy(alpha = 0.2f), CircleShape)
+                                .background(OneUiHealthGreen.copy(alpha = 0.18f), CircleShape)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Add,
                                 contentDescription = null,
-                                tint = WatchCyan,
+                                tint = OneUiHealthGreen,
                                 modifier = Modifier.size(15.dp)
                             )
                         }
                     },
                     colors = ChipDefaults.secondaryChipColors(
-                        backgroundColor = WatchSurface
+                        backgroundColor = OneUiCardSurface
                     ),
                     shape = RoundedCornerShape(50),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
 
-            // History & Samsung Health Sync
+            // Histórico
             item {
                 Chip(
                     onClick = onOpenHistory,
                     label = {
                         Text(
-                            text = "History & Health Sync",
-                            fontSize = 12.sp
+                            text = "Histórico",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Medium
                         )
                     },
                     icon = {
                         Icon(
                             imageVector = WatchIcons.History,
                             contentDescription = null,
-                            tint = WatchEmerald,
+                            tint = OneUiBlue,
                             modifier = Modifier.size(18.dp)
                         )
                     },
                     colors = ChipDefaults.secondaryChipColors(
-                        backgroundColor = WatchSurface
+                        backgroundColor = OneUiCardSurface
                     ),
+                    shape = RoundedCornerShape(50),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
 
-            // Settings
+            // Configurações
             item {
                 Chip(
                     onClick = onOpenSettings,
                     label = {
                         Text(
-                            text = "Bezel, Voice & Pacing",
-                            fontSize = 12.sp
+                            text = "Configurações",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Medium
                         )
                     },
                     icon = {
                         Icon(
                             imageVector = Icons.Default.Settings,
                             contentDescription = null,
-                            tint = WatchTextSecondary,
+                            tint = OneUiTextSecondary,
                             modifier = Modifier.size(18.dp)
                         )
                     },
                     colors = ChipDefaults.secondaryChipColors(
-                        backgroundColor = WatchSurface
+                        backgroundColor = OneUiCardSurface
                     ),
+                    shape = RoundedCornerShape(50),
                     modifier = Modifier.fillMaxWidth()
                 )
             }

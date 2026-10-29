@@ -31,14 +31,13 @@ import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TimeText
 import com.carlosmarins.fivedab.data.CompletedWorkoutSession
-import com.carlosmarins.fivedab.ui.components.FiveDPentagonRadar
 import com.carlosmarins.fivedab.ui.components.bezelScrollableList
-import com.carlosmarins.fivedab.ui.theme.WatchAmber
-import com.carlosmarins.fivedab.ui.theme.WatchCoral
-import com.carlosmarins.fivedab.ui.theme.WatchCyan
-import com.carlosmarins.fivedab.ui.theme.WatchEmerald
-import com.carlosmarins.fivedab.ui.theme.WatchSurface
-import com.carlosmarins.fivedab.ui.theme.WatchTextSecondary
+import com.carlosmarins.fivedab.ui.theme.OneUiBlue
+import com.carlosmarins.fivedab.ui.theme.OneUiCalorieOrange
+import com.carlosmarins.fivedab.ui.theme.OneUiCardSurface
+import com.carlosmarins.fivedab.ui.theme.OneUiHealthGreen
+import com.carlosmarins.fivedab.ui.theme.OneUiHeartRed
+import com.carlosmarins.fivedab.ui.theme.OneUiTextSecondary
 import java.util.Locale
 
 @Composable
@@ -71,85 +70,81 @@ fun WorkoutSummaryScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    FiveDPentagonRadar(
-                        activeDimensions = session.dimensionsTrained,
-                        size = 46.dp
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "WORKOUT COMPLETE",
-                        color = WatchEmerald,
-                        fontSize = 11.sp,
-                        fontWeight = FontWeight.ExtraBold
+                        text = "Treino Concluído",
+                        color = OneUiHealthGreen,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold
                     )
+                    Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = session.routineName,
                         color = Color.White,
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.SemiBold,
                         textAlign = TextAlign.Center
                     )
                 }
             }
 
-            // Stats Grid Row 1: Duration & Calories
+            // Stats Grid Row 1: Duração & Calorias
             item {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     MetricBox(
-                        label = "DURATION",
+                        label = "DURAÇÃO",
                         value = formatMinutesSeconds(session.activeDurationSeconds),
-                        accent = WatchCyan,
+                        accent = OneUiHealthGreen,
                         modifier = Modifier.weight(1f)
                     )
                     MetricBox(
-                        label = "CALORIES",
+                        label = "CALORIAS",
                         value = String.format(Locale.US, "%.0f kcal", session.caloriesBurnedKcal),
-                        accent = WatchAmber,
+                        accent = OneUiCalorieOrange,
                         modifier = Modifier.weight(1f)
                     )
                 }
             }
 
-            // Stats Grid Row 2: Total Reps & Hold Seconds
+            // Stats Grid Row 2: Repetições & Isometria
             item {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     MetricBox(
-                        label = "TOTAL REPS",
+                        label = "REPETIÇÕES",
                         value = "${session.totalRepsCompleted}",
-                        accent = WatchEmerald,
+                        accent = Color.White,
                         modifier = Modifier.weight(1f)
                     )
                     MetricBox(
-                        label = "PLANK / HOLD",
+                        label = "PRANCHA",
                         value = "${session.totalHoldSecondsCompleted}s",
-                        accent = WatchCyan,
+                        accent = OneUiBlue,
                         modifier = Modifier.weight(1f)
                     )
                 }
             }
 
-            // Stats Grid Row 3: Avg & Max Heart Rate
+            // Stats Grid Row 3: FC Média & FC Máxima
             item {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     MetricBox(
-                        label = "AVG HR",
+                        label = "FC MÉDIA",
                         value = if (session.avgHeartRateBpm > 0) "${session.avgHeartRateBpm} bpm" else "--",
-                        accent = WatchCoral,
+                        accent = OneUiHeartRed,
                         modifier = Modifier.weight(1f)
                     )
                     MetricBox(
-                        label = "MAX HR",
+                        label = "FC MÁX",
                         value = if (session.maxHeartRateBpm > 0) "${session.maxHeartRateBpm} bpm" else "--",
-                        accent = WatchCoral,
+                        accent = OneUiHeartRed,
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -159,24 +154,24 @@ fun WorkoutSummaryScreen(
             item {
                 Text(
                     text = if (session.syncedToHealth) {
-                        "✓ Synced with Samsung Health / Health Services"
+                        "✓ Sincronizado com Samsung Health"
                     } else {
-                        "Saved locally on Watch"
+                        "Salvo no relógio"
                     },
-                    color = if (session.syncedToHealth) WatchEmerald else WatchTextSecondary,
+                    color = if (session.syncedToHealth) OneUiHealthGreen else OneUiTextSecondary,
                     fontSize = 9.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
 
-            // Done Button
+            // Botão Concluir
             item {
                 Chip(
                     onClick = onDone,
                     label = {
                         Text(
-                            text = "Done",
+                            text = "Concluir",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.Black
@@ -190,9 +185,10 @@ fun WorkoutSummaryScreen(
                         )
                     },
                     colors = ChipDefaults.primaryChipColors(
-                        backgroundColor = WatchEmerald,
+                        backgroundColor = OneUiHealthGreen,
                         contentColor = Color.Black
                     ),
+                    shape = RoundedCornerShape(50),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -210,20 +206,20 @@ private fun MetricBox(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .background(WatchSurface, RoundedCornerShape(10.dp))
-            .padding(vertical = 6.dp, horizontal = 4.dp)
+            .background(OneUiCardSurface, RoundedCornerShape(16.dp))
+            .padding(vertical = 7.dp, horizontal = 4.dp)
     ) {
         Text(
             text = label,
-            color = WatchTextSecondary,
+            color = OneUiTextSecondary,
             fontSize = 8.sp,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.Medium
         )
         Text(
             text = value,
             color = accent,
             fontSize = 13.sp,
-            fontWeight = FontWeight.ExtraBold
+            fontWeight = FontWeight.Bold
         )
     }
 }

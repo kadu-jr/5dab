@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import com.carlosmarins.fivedab.ui.components.WatchIcons
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,10 +35,12 @@ import androidx.wear.compose.material.TimeText
 import androidx.wear.compose.material.ToggleChip
 import androidx.wear.compose.material.ToggleChipDefaults
 import com.carlosmarins.fivedab.data.WorkoutSettings
+import com.carlosmarins.fivedab.ui.components.WatchIcons
 import com.carlosmarins.fivedab.ui.components.bezelScrollableList
-import com.carlosmarins.fivedab.ui.theme.WatchCyan
-import com.carlosmarins.fivedab.ui.theme.WatchSurface
-import com.carlosmarins.fivedab.ui.theme.WatchTextSecondary
+import com.carlosmarins.fivedab.ui.theme.OneUiBlue
+import com.carlosmarins.fivedab.ui.theme.OneUiButtonSurface
+import com.carlosmarins.fivedab.ui.theme.OneUiCardSurface
+import com.carlosmarins.fivedab.ui.theme.OneUiTextSecondary
 import java.util.Locale
 
 @Composable
@@ -73,10 +75,10 @@ fun SettingsScreen(
         ) {
             item {
                 Text(
-                    text = "WORKOUT SETTINGS",
-                    color = WatchCyan,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.ExtraBold
+                    text = "Configurações",
+                    color = Color.White,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold
                 )
             }
 
@@ -86,11 +88,11 @@ fun SettingsScreen(
                     onCheckedChange = { onToggleAutoPace() },
                     label = {
                         Column {
-                            Text("Auto-Pace Reps", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                            Text("Ritmo Automático", fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
                             Text(
-                                "Count reps automatically on timer",
+                                "Conta reps pelo temporizador",
                                 fontSize = 8.sp,
-                                color = WatchTextSecondary
+                                color = OneUiTextSecondary
                             )
                         }
                     },
@@ -98,9 +100,12 @@ fun SettingsScreen(
                         Switch(checked = settings.autoPaceReps)
                     },
                     colors = ToggleChipDefaults.toggleChipColors(
-                        checkedStartBackgroundColor = WatchSurface,
-                        checkedEndBackgroundColor = WatchSurface
+                        checkedStartBackgroundColor = OneUiCardSurface,
+                        checkedEndBackgroundColor = OneUiCardSurface,
+                        uncheckedStartBackgroundColor = OneUiCardSurface,
+                        uncheckedEndBackgroundColor = OneUiCardSurface
                     ),
+                    shape = RoundedCornerShape(50),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -111,11 +116,11 @@ fun SettingsScreen(
                     onCheckedChange = { onToggleHaptics() },
                     label = {
                         Column {
-                            Text("Wrist Haptics", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                            Text("Vibração no Pulso", fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
                             Text(
-                                "Vibrate on each rep & countdown",
+                                "Vibra a cada repetição e alerta",
                                 fontSize = 8.sp,
-                                color = WatchTextSecondary
+                                color = OneUiTextSecondary
                             )
                         }
                     },
@@ -123,9 +128,12 @@ fun SettingsScreen(
                         Switch(checked = settings.hapticEnabled)
                     },
                     colors = ToggleChipDefaults.toggleChipColors(
-                        checkedStartBackgroundColor = WatchSurface,
-                        checkedEndBackgroundColor = WatchSurface
+                        checkedStartBackgroundColor = OneUiCardSurface,
+                        checkedEndBackgroundColor = OneUiCardSurface,
+                        uncheckedStartBackgroundColor = OneUiCardSurface,
+                        uncheckedEndBackgroundColor = OneUiCardSurface
                     ),
+                    shape = RoundedCornerShape(50),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -136,11 +144,11 @@ fun SettingsScreen(
                     onCheckedChange = { onToggleVoiceCoach() },
                     label = {
                         Column {
-                            Text("Voice Coach (TTS)", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                            Text("Guia de Voz (TTS)", fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
                             Text(
-                                "Announce exercises & rep milestones",
+                                "Anuncia exercícios e contagem",
                                 fontSize = 8.sp,
-                                color = WatchTextSecondary
+                                color = OneUiTextSecondary
                             )
                         }
                     },
@@ -148,9 +156,12 @@ fun SettingsScreen(
                         Switch(checked = settings.voiceCoachEnabled)
                     },
                     colors = ToggleChipDefaults.toggleChipColors(
-                        checkedStartBackgroundColor = WatchSurface,
-                        checkedEndBackgroundColor = WatchSurface
+                        checkedStartBackgroundColor = OneUiCardSurface,
+                        checkedEndBackgroundColor = OneUiCardSurface,
+                        uncheckedStartBackgroundColor = OneUiCardSurface,
+                        uncheckedEndBackgroundColor = OneUiCardSurface
                     ),
+                    shape = RoundedCornerShape(50),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -161,11 +172,11 @@ fun SettingsScreen(
                     onCheckedChange = { onToggleAudioTones() },
                     label = {
                         Column {
-                            Text("Audio Beeps", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                            Text("Bipes Sonoros", fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
                             Text(
-                                "Cadence beeps & 3-2-1 pips",
+                                "Sons de cadência e contagem 3-2-1",
                                 fontSize = 8.sp,
-                                color = WatchTextSecondary
+                                color = OneUiTextSecondary
                             )
                         }
                     },
@@ -173,9 +184,12 @@ fun SettingsScreen(
                         Switch(checked = settings.audioTonesEnabled)
                     },
                     colors = ToggleChipDefaults.toggleChipColors(
-                        checkedStartBackgroundColor = WatchSurface,
-                        checkedEndBackgroundColor = WatchSurface
+                        checkedStartBackgroundColor = OneUiCardSurface,
+                        checkedEndBackgroundColor = OneUiCardSurface,
+                        uncheckedStartBackgroundColor = OneUiCardSurface,
+                        uncheckedEndBackgroundColor = OneUiCardSurface
                     ),
+                    shape = RoundedCornerShape(50),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -186,18 +200,19 @@ fun SettingsScreen(
                     label = {
                         Column {
                             Text(
-                                text = "Watch8 Rotating Bezel",
+                                text = "Coroa Giratória (Watch8)",
                                 fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.SemiBold
                             )
                             Text(
                                 text = settings.bezelWorkoutAction.label,
                                 fontSize = 9.sp,
-                                color = WatchCyan
+                                color = OneUiBlue
                             )
                         }
                     },
-                    colors = ChipDefaults.secondaryChipColors(backgroundColor = WatchSurface),
+                    colors = ChipDefaults.secondaryChipColors(backgroundColor = OneUiCardSurface),
+                    shape = RoundedCornerShape(50),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -208,8 +223,8 @@ fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "Body Weight (Calorie Calc)",
-                        color = WatchTextSecondary,
+                        text = "Peso Corporal (Cálculo kcal)",
+                        color = OneUiTextSecondary,
                         fontSize = 9.sp
                     )
                     Row(
@@ -218,12 +233,12 @@ fun SettingsScreen(
                     ) {
                         Button(
                             onClick = { onAdjustWeight(-1f) },
-                            colors = ButtonDefaults.secondaryButtonColors(backgroundColor = WatchSurface),
+                            colors = ButtonDefaults.secondaryButtonColors(backgroundColor = OneUiButtonSurface),
                             modifier = Modifier.size(28.dp)
                         ) {
                             Icon(
                                 imageVector = WatchIcons.Remove,
-                                contentDescription = "Decrease weight",
+                                contentDescription = "Diminuir peso",
                                 modifier = Modifier.size(14.dp)
                             )
                         }
@@ -237,12 +252,12 @@ fun SettingsScreen(
                         Spacer(modifier = Modifier.width(10.dp))
                         Button(
                             onClick = { onAdjustWeight(1f) },
-                            colors = ButtonDefaults.secondaryButtonColors(backgroundColor = WatchSurface),
+                            colors = ButtonDefaults.secondaryButtonColors(backgroundColor = OneUiButtonSurface),
                             modifier = Modifier.size(28.dp)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Add,
-                                contentDescription = "Increase weight",
+                                contentDescription = "Aumentar peso",
                                 modifier = Modifier.size(14.dp)
                             )
                         }
