@@ -84,8 +84,12 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.guava)
+    implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.androidx.concurrent.futures)
     implementation(libs.kotlinx.serialization.json)
+
+    // Wearable Data Layer (Watch <-> Phone Companion communication)
+    implementation(libs.play.services.wearable)
 
     debugImplementation(libs.androidx.ui.tooling)
 }

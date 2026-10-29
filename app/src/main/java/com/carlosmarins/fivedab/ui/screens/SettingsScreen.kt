@@ -50,6 +50,7 @@ fun SettingsScreen(
     onToggleHaptics: () -> Unit,
     onToggleAudioTones: () -> Unit,
     onToggleVoiceCoach: () -> Unit,
+    onTogglePhoneAudioRelay: () -> Unit,
     onCycleBezelMode: () -> Unit,
     onAdjustWeight: (Float) -> Unit
 ) {
@@ -79,6 +80,34 @@ fun SettingsScreen(
                     color = Color.White,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold
+                )
+            }
+
+            item {
+                ToggleChip(
+                    checked = settings.routeAudioToPhoneCompanion,
+                    onCheckedChange = { onTogglePhoneAudioRelay() },
+                    label = {
+                        Column {
+                            Text("Phone Earbuds Audio", fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+                            Text(
+                                "Play on phone earbuds over videos",
+                                fontSize = 8.sp,
+                                color = OneUiTextSecondary
+                            )
+                        }
+                    },
+                    toggleControl = {
+                        Switch(checked = settings.routeAudioToPhoneCompanion)
+                    },
+                    colors = ToggleChipDefaults.toggleChipColors(
+                        checkedStartBackgroundColor = OneUiCardSurface,
+                        checkedEndBackgroundColor = OneUiCardSurface,
+                        uncheckedStartBackgroundColor = OneUiCardSurface,
+                        uncheckedEndBackgroundColor = OneUiCardSurface
+                    ),
+                    shape = RoundedCornerShape(50),
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
 
@@ -144,9 +173,9 @@ fun SettingsScreen(
                     onCheckedChange = { onToggleVoiceCoach() },
                     label = {
                         Column {
-                            Text("Voice Coach (Watch Speaker)", fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+                            Text("Voice Coach (TTS)", fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
                             Text(
-                                "Plays TTS directly on watch speaker",
+                                "Announce exercises & rep counts",
                                 fontSize = 8.sp,
                                 color = OneUiTextSecondary
                             )

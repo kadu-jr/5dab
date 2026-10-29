@@ -10,9 +10,12 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.speech.tts.TextToSpeech
+import com.carlosmarins.fivedab.data.CompanionCuePayload
 import java.util.Locale
 
 class CueEngine(context: Context) {
+
+    val companionBridge = WatchCompanionBridge(context)
 
     private val vibrator: Vibrator? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         val manager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager
@@ -55,7 +58,8 @@ class CueEngine(context: Context) {
         targetReps: Int,
         hapticEnabled: Boolean,
         audioEnabled: Boolean,
-        voiceEnabled: Boolean
+        voiceEnabled: Boolean,
+        routeToPhoneCompanion: Boolean = true
     ) {
         if (hapticEnabled) {
             // Crisp two-stage cadence pulse on the wrist
@@ -70,15 +74,25 @@ class CueEngine(context: Context) {
             currentRep % 5 == 0 ||
             remaining in 1..3
 
-        if (voiceEnabled && isTtsReady && (isHalfway || isMilestone)) {
+        if (voiceEnabled && (isHalfway || isMilestone)) {
             val speech = when {
                 remaining in 1..3 -> remaining.toString()
                 isHalfway -> "Halfway, $currentRep"
                 else -> currentRep.toString()
             }
-            speak(speech)
+            deliverAudioCue(
+                speechText = speech,
+                toneType = if (audioEnabled) ToneGenerator.TONE_PROP_BEEP else null,
+                toneDurationMs = 70,
+                routeToPhoneCompanion = routeToPhoneCompanion
+            )
         } else if (audioEnabled) {
-            playTone(ToneGenerator.TONE_PROP_BEEP, 70)
+            deliverAudioCue(
+                speechText = null,
+                toneType = ToneGenerator.TONE_PROP_BEEP,
+                toneDurationMs = 70,
+                routeToPhoneCompanion = routeToPhoneCompanion
+            )
         }
     }
 
@@ -87,38 +101,42 @@ class CueEngine(context: Context) {
         totalSeconds: Int,
         hapticEnabled: Boolean,
         audioEnabled: Boolean,
-        voiceEnabled: Boolean
+        voiceEnabled: Boolean,
+        routeToPhoneCompanion: Boolean = true
     ) {
         when {
             remainingSeconds in 1..3 -> {
                 if (hapticEnabled) {
                     vibrateWaveform(longArrayOf(0L, 65L), intArrayOf(0, 230))
                 }
-                if (voiceEnabled && isTtsReady) {
-                    speak(remainingSeconds.toString())
-                } else if (audioEnabled) {
-                    playTone(ToneGenerator.TONE_CDMA_PIP, 90)
-                }
+                deliverAudioCue(
+                    speechText = if (voiceEnabled) remainingSeconds.toString() else null,
+                    toneType = if (audioEnabled) ToneGenerator.TONE_CDMA_PIP else null,
+                    toneDurationMs = 90,
+                    routeToPhoneCompanion = routeToPhoneCompanion
+                )
             }
             totalSeconds >= 20 && remainingSeconds == totalSeconds / 2 -> {
                 if (hapticEnabled) {
                     vibrateWaveform(longArrayOf(0L, 50L, 45L, 50L), intArrayOf(0, 180, 0, 180))
                 }
-                if (voiceEnabled && isTtsReady) {
-                    speak("Halfway, $remainingSeconds seconds")
-                } else if (audioEnabled) {
-                    playTone(ToneGenerator.TONE_PROP_ACK, 110)
-                }
+                deliverAudioCue(
+                    speechText = if (voiceEnabled) "Halfway, $remainingSeconds seconds" else null,
+                    toneType = if (audioEnabled) ToneGenerator.TONE_PROP_ACK else null,
+                    toneDurationMs = 110,
+                    routeToPhoneCompanion = routeToPhoneCompanion
+                )
             }
             remainingSeconds > 3 && remainingSeconds % 10 == 0 -> {
                 if (hapticEnabled) {
                     vibrateWaveform(longArrayOf(0L, 30L), intArrayOf(0, 140))
                 }
-                if (voiceEnabled && isTtsReady) {
-                    speak("$remainingSeconds seconds")
-                } else if (audioEnabled) {
-                    playTone(ToneGenerator.TONE_PROP_BEEP, 55)
-                }
+                deliverAudioCue(
+                    speechText = if (voiceEnabled) "$remainingSeconds seconds" else null,
+                    toneType = if (audioEnabled) ToneGenerator.TONE_PROP_BEEP else null,
+                    toneDurationMs = 55,
+                    routeToPhoneCompanion = routeToPhoneCompanion
+                )
             }
         }
     }
@@ -126,14 +144,20 @@ class CueEngine(context: Context) {
     fun onPrepCountdownTick(
         secondsLeft: Int,
         hapticEnabled: Boolean,
-        audioEnabled: Boolean
+        audioEnabled: Boolean,
+        routeToPhoneCompanion: Boolean = true
     ) {
         if (secondsLeft in 1..3) {
             if (hapticEnabled) {
                 vibrateWaveform(longArrayOf(0L, 55L), intArrayOf(0, 200))
             }
             if (audioEnabled) {
-                playTone(ToneGenerator.TONE_CDMA_PIP, 80)
+                deliverAudioCue(
+                    speechText = null,
+                    toneType = ToneGenerator.TONE_CDMA_PIP,
+                    toneDurationMs = 80,
+                    routeToPhoneCompanion = routeToPhoneCompanion
+                )
             }
         }
     }
@@ -144,18 +168,25 @@ class CueEngine(context: Context) {
         isTimed: Boolean,
         hapticEnabled: Boolean,
         audioEnabled: Boolean,
-        voiceEnabled: Boolean
+        voiceEnabled: Boolean,
+        routeToPhoneCompanion: Boolean = true
     ) {
         if (hapticEnabled) {
             vibrateWaveform(longArrayOf(0L, 90L, 50L, 120L), intArrayOf(0, 200, 0, 255))
         }
-        if (audioEnabled) {
-            playTone(ToneGenerator.TONE_PROP_ACK, 150)
-        }
-        if (voiceEnabled && isTtsReady) {
-            val unit = if (isTimed) "seconds" else "reps"
-            speak("$exerciseName, $targetValue $unit. Go!")
-        }
+        val unit = if (isTimed) "seconds" else "reps"
+        val speech = if (voiceEnabled) "$exerciseName, $targetValue $unit. Go!" else null
+        val tone = if (audioEnabled) ToneGenerator.TONE_PROP_ACK else null
+
+        deliverAudioCue(
+            speechText = speech,
+            toneType = tone,
+            toneDurationMs = 150,
+            routeToPhoneCompanion = routeToPhoneCompanion,
+            exerciseName = exerciseName,
+            targetValue = targetValue,
+            isTimed = isTimed
+        )
     }
 
     fun onAnnounceRest(
@@ -163,7 +194,8 @@ class CueEngine(context: Context) {
         nextExerciseName: String,
         hapticEnabled: Boolean,
         audioEnabled: Boolean,
-        voiceEnabled: Boolean
+        voiceEnabled: Boolean,
+        routeToPhoneCompanion: Boolean = true
     ) {
         if (hapticEnabled) {
             vibrateWaveform(
@@ -171,18 +203,23 @@ class CueEngine(context: Context) {
                 intArrayOf(0, 190, 0, 210, 0, 255)
             )
         }
-        if (audioEnabled) {
-            playTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 180)
-        }
-        if (voiceEnabled && isTtsReady) {
-            speak("Rest $restSeconds seconds. Next up: $nextExerciseName")
-        }
+        val speech = if (voiceEnabled) "Rest $restSeconds seconds. Next up: $nextExerciseName" else null
+        val tone = if (audioEnabled) ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD else null
+
+        deliverAudioCue(
+            speechText = speech,
+            toneType = tone,
+            toneDurationMs = 180,
+            routeToPhoneCompanion = routeToPhoneCompanion,
+            exerciseName = nextExerciseName
+        )
     }
 
     fun onWorkoutFinished(
         hapticEnabled: Boolean,
         audioEnabled: Boolean,
-        voiceEnabled: Boolean
+        voiceEnabled: Boolean,
+        routeToPhoneCompanion: Boolean = true
     ) {
         if (hapticEnabled) {
             vibrateWaveform(
@@ -190,11 +227,56 @@ class CueEngine(context: Context) {
                 intArrayOf(0, 200, 0, 220, 0, 240, 0, 255)
             )
         }
-        if (audioEnabled) {
-            playTone(ToneGenerator.TONE_CDMA_CONFIRM, 260)
+        val speech = if (voiceEnabled) "5D Ab workout complete! Great job." else null
+        val tone = if (audioEnabled) ToneGenerator.TONE_CDMA_CONFIRM else null
+
+        deliverAudioCue(
+            speechText = speech,
+            toneType = tone,
+            toneDurationMs = 260,
+            routeToPhoneCompanion = routeToPhoneCompanion
+        )
+    }
+
+    private fun deliverAudioCue(
+        speechText: String?,
+        toneType: Int?,
+        toneDurationMs: Int,
+        routeToPhoneCompanion: Boolean,
+        exerciseName: String? = null,
+        targetValue: Int = 0,
+        isTimed: Boolean = false
+    ) {
+        if (speechText == null && toneType == null) return
+
+        val playLocallyOnWatch = {
+            if (toneType != null && speechText == null) {
+                playTone(toneType, toneDurationMs)
+            } else if (speechText != null) {
+                if (toneType != null) {
+                    playTone(toneType, toneDurationMs)
+                }
+                if (isTtsReady) {
+                    speak(speechText)
+                }
+            }
         }
-        if (voiceEnabled && isTtsReady) {
-            speak("5D Ab workout complete! Great job.")
+
+        if (routeToPhoneCompanion) {
+            val payload = CompanionCuePayload(
+                speechText = speechText,
+                toneType = toneType,
+                toneDurationMs = toneDurationMs,
+                exerciseName = exerciseName,
+                targetValue = targetValue,
+                isTimed = isTimed
+            )
+            companionBridge.dispatchCueToPhoneOrFallback(
+                payload = payload,
+                onFallbackWatchLocal = playLocallyOnWatch
+            )
+        } else {
+            playLocallyOnWatch()
         }
     }
 

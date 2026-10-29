@@ -74,6 +74,13 @@ class WorkoutRepository(private val context: Context) {
         }
     }
 
+    suspend fun saveAllRoutines(routines: List<WorkoutRoutine>) {
+        if (routines.isEmpty()) return
+        context.dataStore.edit { prefs ->
+            prefs[KEY_ROUTINES] = json.encodeToString(routines)
+        }
+    }
+
     suspend fun createCustomRoutine(name: String): WorkoutRoutine {
         val newRoutine = WorkoutRoutine(
             id = "custom_${UUID.randomUUID().toString().take(8)}",

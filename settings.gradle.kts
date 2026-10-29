@@ -22,3 +22,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "FiveDAbWear"
 include(":app")
+include(":phone")
+

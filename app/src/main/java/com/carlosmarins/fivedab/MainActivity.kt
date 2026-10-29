@@ -1,6 +1,7 @@
 package com.carlosmarins.fivedab
 
 import android.Manifest
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
@@ -18,6 +19,7 @@ import androidx.navigation.navArgument
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
+import com.carlosmarins.fivedab.service.WatchDataLayerListenerService
 import com.carlosmarins.fivedab.ui.screens.ActiveWorkoutScreen
 import com.carlosmarins.fivedab.ui.screens.ExerciseCatalogPickerScreen
 import com.carlosmarins.fivedab.ui.screens.HistoryScreen
@@ -46,6 +48,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         requestWatchSensorPermissions()
+        handleRemoteStartIntent(intent)
 
         setContent {
             FiveDAbWearTheme {
@@ -63,6 +66,19 @@ class MainActivity : ComponentActivity() {
                     }
                 )
             }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleRemoteStartIntent(intent)
+    }
+
+    private fun handleRemoteStartIntent(intent: Intent?) {
+        val routineId = intent?.getStringExtra(WatchDataLayerListenerService.EXTRA_START_ROUTINE_ID)
+        if (!routineId.isNullOrBlank()) {
+            intent.removeExtra(WatchDataLayerListenerService.EXTRA_START_ROUTINE_ID)
+            viewModel.startWorkout(routineId)
         }
     }
 
@@ -92,12 +108,16 @@ fun FiveDAbWearApp(
     val workoutState by viewModel.workoutState.collectAsState()
     val biometrics by viewModel.biometrics.collectAsState()
 
-    // Automatically navigate to Summary screen when workout completes
+    // Automatically navigate to Active Workout or Summary screen when workout state changes
     LaunchedEffect(workoutState.phase) {
         if (workoutState.phase == WorkoutPhase.COMPLETED) {
             navController.navigate("workout_summary") {
                 popUpTo("home") { inclusive = false }
             }
+        } else if (workoutState.phase == WorkoutPhase.PREP &&
+            navController.currentDestination?.route != "active_workout"
+        ) {
+            navController.navigate("active_workout")
         }
     }
 
@@ -252,6 +272,7 @@ fun FiveDAbWearApp(
                 onToggleHaptics = { viewModel.toggleHaptics() },
                 onToggleAudioTones = { viewModel.toggleAudioTones() },
                 onToggleVoiceCoach = { viewModel.toggleVoiceCoach() },
+                onTogglePhoneAudioRelay = { viewModel.toggleRouteAudioToPhone() },
                 onCycleBezelMode = { viewModel.cycleBezelWorkoutAction() },
                 onAdjustWeight = { delta -> viewModel.adjustUserWeight(delta) }
             )

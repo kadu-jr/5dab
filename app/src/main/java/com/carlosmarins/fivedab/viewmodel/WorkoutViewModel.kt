@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.carlosmarins.fivedab.data.AbDimension
 import com.carlosmarins.fivedab.data.BezelWorkoutAction
+import com.carlosmarins.fivedab.data.CompanionWorkoutTelemetry
 import com.carlosmarins.fivedab.data.CompletedWorkoutSession
 import com.carlosmarins.fivedab.data.ExerciseDefinition
 import com.carlosmarins.fivedab.data.PresetRoutines
@@ -132,6 +133,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                 }
             }
             repository.saveRoutine(routine.copy(steps = updatedSteps))
+            cueEngine.companionBridge.pushRoutinesSnapshotToPhone(routines.value)
         }
     }
 
@@ -148,6 +150,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                 roundLabel = "Set ${routine.steps.size + 1}"
             )
             repository.saveRoutine(routine.copy(steps = routine.steps + newStep))
+            cueEngine.companionBridge.pushRoutinesSnapshotToPhone(routines.value)
         }
     }
 
@@ -157,12 +160,14 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             if (routine.steps.size <= 1) return@launch
             val filtered = routine.steps.filterNot { it.stepId == stepId }
             repository.saveRoutine(routine.copy(steps = filtered))
+            cueEngine.companionBridge.pushRoutinesSnapshotToPhone(routines.value)
         }
     }
 
     fun resetRoutine(routineId: String) {
         viewModelScope.launch {
             repository.resetRoutineToDefault(routineId)
+            cueEngine.companionBridge.pushRoutinesSnapshotToPhone(routines.value)
         }
     }
 
@@ -170,6 +175,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         viewModelScope.launch {
             val customCount = routines.value.count { !it.isPreset } + 1
             val created = repository.createCustomRoutine("My 5D Ab #$customCount")
+            cueEngine.companionBridge.pushRoutinesSnapshotToPhone(routines.value)
             onCreated(created.id)
         }
     }
@@ -177,6 +183,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     fun deleteCustomRoutine(routineId: String) {
         viewModelScope.launch {
             repository.deleteCustomRoutine(routineId)
+            cueEngine.companionBridge.pushRoutinesSnapshotToPhone(routines.value)
         }
     }
 
@@ -205,6 +212,14 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     fun toggleVoiceCoach() {
         viewModelScope.launch {
             repository.updateSettings { it.copy(voiceCoachEnabled = !it.voiceCoachEnabled) }
+        }
+    }
+
+    fun toggleRouteAudioToPhone() {
+        viewModelScope.launch {
+            repository.updateSettings {
+                it.copy(routeAudioToPhoneCompanion = !it.routeAudioToPhoneCompanion)
+            }
         }
     }
 
@@ -294,9 +309,41 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                         metValue = met,
                         userWeightKg = settings.value.userWeightKg
                     )
+                    broadcastTelemetry()
                 }
             }
         }
+    }
+
+    private fun broadcastTelemetry() {
+        val s = _workoutState.value
+        val bio = biometrics.value
+        val isActive = s.phase != WorkoutPhase.IDLE && s.phase != WorkoutPhase.COMPLETED
+        cueEngine.companionBridge.sendWorkoutTelemetry(
+            CompanionWorkoutTelemetry(
+                isActive = isActive,
+                phase = s.phase.name,
+                routineName = s.routine.name,
+                exerciseName = s.currentExercise.name,
+                exerciseSubtitle = s.currentExercise.subtitle,
+                stepIndex = s.currentStepIndex,
+                totalSteps = s.routine.steps.size,
+                currentProgress = when (s.phase) {
+                    WorkoutPhase.REST -> s.restRemainingSeconds
+                    WorkoutPhase.PREP -> s.prepRemainingSeconds
+                    else -> s.currentProgress
+                },
+                currentTarget = when (s.phase) {
+                    WorkoutPhase.REST -> s.restTotalSeconds
+                    WorkoutPhase.PREP -> settings.value.prepCountdownSeconds
+                    else -> s.currentTarget
+                },
+                isTimed = s.currentExercise.mode == StepMode.TIMED,
+                heartRateBpm = bio.currentHeartRateBpm,
+                caloriesKcal = bio.caloriesKcal,
+                elapsedSeconds = s.elapsedWorkoutSeconds
+            )
+        )
     }
 
     private fun startPrepTicker() {
@@ -308,7 +355,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                 cueEngine.onPrepCountdownTick(
                     secondsLeft = remaining,
                     hapticEnabled = s.hapticEnabled,
-                    audioEnabled = s.audioTonesEnabled
+                    audioEnabled = s.audioTonesEnabled,
+                    routeToPhoneCompanion = s.routeAudioToPhoneCompanion
                 )
                 delay(1000L)
                 val current = _workoutState.value
@@ -346,6 +394,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             currentProgress = 0,
             currentTarget = step.targetValue
         )
+        broadcastTelemetry()
 
         WorkoutForegroundService.startOrUpdate(
             appContext,
@@ -359,7 +408,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             isTimed = ex.mode == StepMode.TIMED,
             hapticEnabled = s.hapticEnabled,
             audioEnabled = s.audioTonesEnabled,
-            voiceEnabled = s.voiceCoachEnabled
+            voiceEnabled = s.voiceCoachEnabled,
+            routeToPhoneCompanion = s.routeAudioToPhoneCompanion
         )
 
         startActiveSetTicker()
@@ -391,7 +441,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                             totalSeconds = current.currentTarget,
                             hapticEnabled = s.hapticEnabled,
                             audioEnabled = s.audioTonesEnabled,
-                            voiceEnabled = s.voiceCoachEnabled
+                            voiceEnabled = s.voiceCoachEnabled,
+                            routeToPhoneCompanion = s.routeAudioToPhoneCompanion
                         )
                     } else {
                         completeCurrentSet()
@@ -418,7 +469,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                         targetReps = current.currentTarget,
                         hapticEnabled = s.hapticEnabled,
                         audioEnabled = s.audioTonesEnabled,
-                        voiceEnabled = s.voiceCoachEnabled
+                        voiceEnabled = s.voiceCoachEnabled,
+                        routeToPhoneCompanion = s.routeAudioToPhoneCompanion
                     )
 
                     if (nextRep >= current.currentTarget) {
@@ -442,12 +494,14 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             currentProgress = nextRep,
             totalRepsAccumulated = current.totalRepsAccumulated + 1
         )
+        broadcastTelemetry()
         cueEngine.onRepCount(
             currentRep = nextRep,
             targetReps = current.currentTarget,
             hapticEnabled = s.hapticEnabled,
             audioEnabled = s.audioTonesEnabled,
-            voiceEnabled = s.voiceCoachEnabled
+            voiceEnabled = s.voiceCoachEnabled,
+            routeToPhoneCompanion = s.routeAudioToPhoneCompanion
         )
         if (nextRep >= current.currentTarget) {
             completeCurrentSet()
@@ -507,6 +561,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             restRemainingSeconds = restSeconds,
             restTotalSeconds = restSeconds
         )
+        broadcastTelemetry()
 
         WorkoutForegroundService.startOrUpdate(
             appContext,
@@ -518,7 +573,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             nextExerciseName = nextEx.name,
             hapticEnabled = s.hapticEnabled,
             audioEnabled = s.audioTonesEnabled,
-            voiceEnabled = s.voiceCoachEnabled
+            voiceEnabled = s.voiceCoachEnabled,
+            routeToPhoneCompanion = s.routeAudioToPhoneCompanion
         )
 
         phaseTickerJob?.cancel()
@@ -528,7 +584,8 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                 cueEngine.onPrepCountdownTick(
                     secondsLeft = rem,
                     hapticEnabled = settings.value.hapticEnabled,
-                    audioEnabled = settings.value.audioTonesEnabled
+                    audioEnabled = settings.value.audioTonesEnabled,
+                    routeToPhoneCompanion = settings.value.routeAudioToPhoneCompanion
                 )
                 delay(1000L)
                 val current = _workoutState.value
@@ -567,6 +624,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
             exerciseTracker.resumeSession()
             val restored = state.phaseBeforePause
             _workoutState.value = state.copy(phase = restored)
+            broadcastTelemetry()
             when (restored) {
                 WorkoutPhase.PREP -> startPrepTicker()
                 WorkoutPhase.ACTIVE_SET -> startActiveSetTicker()
@@ -586,6 +644,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
                 phase = WorkoutPhase.PAUSED,
                 phaseBeforePause = state.phase
             )
+            broadcastTelemetry()
             WorkoutForegroundService.startOrUpdate(appContext, "Paused • ${state.routine.name}")
         }
     }
@@ -604,7 +663,11 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         cueEngine.onWorkoutFinished(
             hapticEnabled = s.hapticEnabled,
             audioEnabled = s.audioTonesEnabled,
-            voiceEnabled = s.voiceCoachEnabled
+            voiceEnabled = s.voiceCoachEnabled,
+            routeToPhoneCompanion = s.routeAudioToPhoneCompanion
+        )
+        cueEngine.companionBridge.sendWorkoutTelemetry(
+            CompanionWorkoutTelemetry(isActive = false, phase = "COMPLETED")
         )
 
         viewModelScope.launch {

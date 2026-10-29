@@ -98,6 +98,7 @@ data class WorkoutSettings(
     val hapticEnabled: Boolean = true,
     val audioTonesEnabled: Boolean = true,
     val voiceCoachEnabled: Boolean = true,
+    val routeAudioToPhoneCompanion: Boolean = true,
     val bezelWorkoutAction: BezelWorkoutAction = BezelWorkoutAction.ADJUST_TARGET_OR_REST,
     val prepCountdownSeconds: Int = 5,
     val userWeightKg: Float = 75f,
@@ -122,3 +123,42 @@ data class CompletedWorkoutSession(
     val syncedToHealth: Boolean,
     val dimensionsTrained: List<AbDimension> = emptyList()
 )
+
+@Serializable
+data class CompanionCuePayload(
+    val speechText: String? = null,
+    val toneType: Int? = null,
+    val toneDurationMs: Int = 80,
+    val exerciseName: String? = null,
+    val stepIndex: Int = 0,
+    val totalSteps: Int = 0,
+    val currentProgress: Int = 0,
+    val targetValue: Int = 0,
+    val isTimed: Boolean = false
+)
+
+@Serializable
+data class CompanionWorkoutTelemetry(
+    val isActive: Boolean = false,
+    val phase: String = "IDLE",
+    val routineName: String = "",
+    val exerciseName: String = "",
+    val exerciseSubtitle: String = "",
+    val stepIndex: Int = 0,
+    val totalSteps: Int = 0,
+    val currentProgress: Int = 0,
+    val currentTarget: Int = 0,
+    val isTimed: Boolean = false,
+    val heartRateBpm: Int = 0,
+    val caloriesKcal: Double = 0.0,
+    val elapsedSeconds: Int = 0
+)
+
+object CompanionDataLayerPaths {
+    const val PATH_CUE_EVENT = "/5dab/cue_event"
+    const val PATH_WORKOUT_TELEMETRY = "/5dab/workout_telemetry"
+    const val PATH_SYNC_ROUTINES = "/5dab/sync_routines"
+    const val PATH_REQUEST_ROUTINES = "/5dab/request_routines"
+    const val PATH_START_ROUTINE_ON_WATCH = "/5dab/start_routine"
+}
+
