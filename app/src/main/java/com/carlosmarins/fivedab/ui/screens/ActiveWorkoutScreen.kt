@@ -110,14 +110,14 @@ fun ActiveWorkoutScreen(
                 .fillMaxSize()
                 .padding(horizontal = 18.dp, vertical = 14.dp)
         ) {
-            // Top Status Bar (Samsung Health style: Série + Tempo + BPM/kcal)
+            // Top Status Bar (Samsung Health style: Set + Time + BPM/kcal)
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "Série ${state.currentStepIndex + 1}/$totalSteps",
+                        text = "Set ${state.currentStepIndex + 1}/$totalSteps",
                         color = OneUiTextSecondary,
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Medium
@@ -178,7 +178,7 @@ fun ActiveWorkoutScreen(
                 WorkoutPhase.PREP -> {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "PREPARE-SE",
+                            text = "GET READY",
                             color = OneUiCalorieOrange,
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold
@@ -210,7 +210,7 @@ fun ActiveWorkoutScreen(
                 WorkoutPhase.REST -> {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "DESCANSO",
+                            text = "REST",
                             color = OneUiBlue,
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold
@@ -222,7 +222,7 @@ fun ActiveWorkoutScreen(
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "A seguir: ${state.currentExercise.name}",
+                            text = "Next: ${state.currentExercise.name}",
                             color = OneUiHealthGreen,
                             fontSize = 11.sp,
                             fontWeight = FontWeight.SemiBold,
@@ -231,7 +231,7 @@ fun ActiveWorkoutScreen(
                         )
                         val nextUnit = if (state.currentExercise.mode == StepMode.TIMED) "s" else " reps"
                         Text(
-                            text = "${state.currentStep.targetValue}$nextUnit • Gire a coroa ±5s",
+                            text = "${state.currentStep.targetValue}$nextUnit • Rotate bezel ±5s",
                             color = OneUiTextSecondary,
                             fontSize = 9.sp
                         )
@@ -241,7 +241,7 @@ fun ActiveWorkoutScreen(
                 WorkoutPhase.PAUSED -> {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "PAUSADO",
+                            text = "PAUSED",
                             color = OneUiCalorieOrange,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold
@@ -256,7 +256,7 @@ fun ActiveWorkoutScreen(
                             overflow = TextOverflow.Ellipsis
                         )
                         Text(
-                            text = "${state.totalRepsAccumulated} reps • ${state.completedSetsCount} séries feitas",
+                            text = "${state.totalRepsAccumulated} reps • ${state.completedSetsCount} sets done",
                             color = OneUiTextSecondary,
                             fontSize = 10.sp
                         )
@@ -302,7 +302,7 @@ fun ActiveWorkoutScreen(
                                 fontWeight = FontWeight.Bold
                             )
                             Text(
-                                text = "Isometria • Coroa ±5s",
+                                text = "Isometric Hold • Bezel ±5s",
                                 color = OneUiTextSecondary,
                                 fontSize = 9.sp
                             )
@@ -329,11 +329,11 @@ fun ActiveWorkoutScreen(
                                 text = if (settings.autoPaceReps) {
                                     String.format(
                                         Locale.US,
-                                        "Ritmo %.1fs • Toque +1",
+                                        "Auto %.1fs/rep • Tap +1",
                                         state.currentStep.repPaceMs / 1000.0
                                     )
                                 } else {
-                                    "Manual • Toque +1 rep"
+                                    "Manual • Tap +1 rep"
                                 },
                                 color = OneUiTextSecondary,
                                 fontSize = 9.sp
@@ -356,7 +356,7 @@ fun ActiveWorkoutScreen(
                     ) {
                         Icon(
                             imageVector = WatchIcons.Stop,
-                            contentDescription = "Encerrar",
+                            contentDescription = "Finish",
                             tint = Color.White,
                             modifier = Modifier.size(18.dp)
                         )
@@ -368,7 +368,7 @@ fun ActiveWorkoutScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.PlayArrow,
-                            contentDescription = "Retomar",
+                            contentDescription = "Resume",
                             tint = Color.Black,
                             modifier = Modifier.size(22.dp)
                         )
@@ -380,7 +380,7 @@ fun ActiveWorkoutScreen(
                     ) {
                         Icon(
                             imageVector = WatchIcons.SkipNext,
-                            contentDescription = "Pular Série",
+                            contentDescription = "Skip Set",
                             tint = Color.White,
                             modifier = Modifier.size(18.dp)
                         )
@@ -398,7 +398,7 @@ fun ActiveWorkoutScreen(
                     ) {
                         Icon(
                             imageVector = WatchIcons.Pause,
-                            contentDescription = "Pausar",
+                            contentDescription = "Pause",
                             tint = Color.White,
                             modifier = Modifier.size(16.dp)
                         )
@@ -415,9 +415,9 @@ fun ActiveWorkoutScreen(
                     ) {
                         Text(
                             text = if (settings.bezelWorkoutAction == BezelWorkoutAction.ADJUST_TARGET_OR_REST) {
-                                "Coroa: ±Meta"
+                                "Bezel: ±Target"
                             } else {
-                                "Coroa: Pular"
+                                "Bezel: Skip"
                             },
                             color = OneUiBlue,
                             fontSize = 8.sp,
@@ -439,7 +439,7 @@ fun ActiveWorkoutScreen(
                             } else {
                                 Icons.Default.Check
                             },
-                            contentDescription = "Concluir Série / Pular",
+                            contentDescription = "Complete Set / Skip",
                             tint = Color.Black,
                             modifier = Modifier.size(16.dp)
                         )

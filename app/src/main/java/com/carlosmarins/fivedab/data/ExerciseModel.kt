@@ -11,38 +11,38 @@ enum class AbDimension(
 ) {
     FLEXION(
         code = "1D",
-        shortTitle = "Flexão Reto",
-        muscleFocus = "Abdômen Superior e Inferior",
+        shortTitle = "Flexion",
+        muscleFocus = "Upper & Lower Abs",
         colorHex = 0xFF2CE59B // Samsung Health Green
     ),
     LATERAL_FLEXION(
         code = "2D",
-        shortTitle = "Flexão Lateral",
-        muscleFocus = "Oblíquos Laterais",
+        shortTitle = "Lateral Flexion",
+        muscleFocus = "Side Obliques",
         colorHex = 0xFF4CA2FF // One UI Blue
     ),
     ROTATION(
         code = "3D",
-        shortTitle = "Rotação",
-        muscleFocus = "Oblíquos e Core Rotacional",
+        shortTitle = "Rotation",
+        muscleFocus = "Rotational Core",
         colorHex = 0xFFFF9F1C // One UI Amber
     ),
     COUNTER_EXTENSION(
         code = "4D",
-        shortTitle = "Estabilidade",
-        muscleFocus = "Core Profundo e Lombar",
+        shortTitle = "Anti-Extension",
+        muscleFocus = "Deep Core Stability",
         colorHex = 0xFF00E5FF // One UI Cyan
     ),
     COUNTER_LATERAL_FLEXION(
         code = "5D",
         shortTitle = "Anti-Lateral",
-        muscleFocus = "Estabilidade Oblíqua",
+        muscleFocus = "Lateral Core Stability",
         colorHex = 0xFFA970FF // One UI Violet
     ),
     RECOVERY(
         code = "REC",
-        shortTitle = "Alongamento",
-        muscleFocus = "Mobilidade e Fáscia",
+        shortTitle = "Stretch & Vacuum",
+        muscleFocus = "Transverse & Fascia",
         colorHex = 0xFF64FFDA
     )
 }
@@ -55,8 +55,8 @@ enum class StepMode {
 
 @Serializable
 enum class BezelWorkoutAction(val label: String) {
-    ADJUST_TARGET_OR_REST("Ajustar Reps / Tempo"),
-    NAVIGATE_STEPS("Avançar / Voltar Série")
+    ADJUST_TARGET_OR_REST("Adjust Reps / Timer"),
+    NAVIGATE_STEPS("Prev / Next Set")
 }
 
 @Serializable
@@ -79,7 +79,7 @@ data class WorkoutStep(
     val targetValue: Int,
     val repPaceMs: Long = 2000L,
     val restAfterSeconds: Int = 25,
-    val roundLabel: String = "Série 1"
+    val roundLabel: String = "Set 1"
 )
 
 @Serializable

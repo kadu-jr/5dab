@@ -124,13 +124,13 @@ fun StepEditorScreen(
                 }
             }
 
-            // Trocar Exercício
+            // Change Exercise
             item {
                 Chip(
                     onClick = { showExercisePicker = true },
                     label = {
                         Text(
-                            text = "Trocar Exercício",
+                            text = "Change Exercise",
                             fontSize = 11.sp,
                             color = OneUiBlue,
                             fontWeight = FontWeight.SemiBold
@@ -142,10 +142,10 @@ fun StepEditorScreen(
                 )
             }
 
-            // Repetições ou Duração
+            // Target Reps or Duration
             item {
                 AdjusterRow(
-                    title = if (isTimed) "Duração" else "Repetições",
+                    title = if (isTimed) "Hold Duration" else "Target Reps",
                     valueText = if (isTimed) "${targetValue}s" else "$targetValue reps",
                     onDecrement = {
                         val delta = if (isTimed) 5 else 1
@@ -158,12 +158,12 @@ fun StepEditorScreen(
                 )
             }
 
-            // Ritmo Automático por Repetição
+            // Auto Pace per Rep
             if (!isTimed) {
                 item {
                     val secsPerRep = String.format(Locale.US, "%.1fs/rep", repPaceMs / 1000.0)
                     AdjusterRow(
-                        title = "Ritmo por Repetição",
+                        title = "Auto-Rep Pace",
                         valueText = secsPerRep,
                         onDecrement = {
                             repPaceMs = (repPaceMs - 200L).coerceAtLeast(1000L)
@@ -175,10 +175,10 @@ fun StepEditorScreen(
                 }
             }
 
-            // Descanso Após Série
+            // Rest After Set
             item {
                 AdjusterRow(
-                    title = "Descanso Após Série",
+                    title = "Rest After Set",
                     valueText = "${restSeconds}s",
                     onDecrement = {
                         restSeconds = (restSeconds - 5).coerceAtLeast(0)
@@ -189,7 +189,7 @@ fun StepEditorScreen(
                 )
             }
 
-            // Salvar
+            // Save
             item {
                 Chip(
                     onClick = {
@@ -197,7 +197,7 @@ fun StepEditorScreen(
                     },
                     label = {
                         Text(
-                            text = "Salvar",
+                            text = "Save Step",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.Black
@@ -225,7 +225,7 @@ fun StepEditorScreen(
                         onClick = onDelete,
                         label = {
                             Text(
-                                text = "Remover Série",
+                                text = "Remove Step",
                                 fontSize = 11.sp,
                                 color = OneUiHeartRed
                             )
@@ -277,7 +277,7 @@ private fun AdjusterRow(
             ) {
                 Icon(
                     imageVector = WatchIcons.Remove,
-                    contentDescription = "Diminuir $title",
+                    contentDescription = "Decrease $title",
                     modifier = Modifier.size(16.dp)
                 )
             }
@@ -296,7 +296,7 @@ private fun AdjusterRow(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Aumentar $title",
+                    contentDescription = "Increase $title",
                     modifier = Modifier.size(16.dp)
                 )
             }
@@ -330,7 +330,7 @@ fun ExerciseCatalogPickerScreen(
         ) {
             item {
                 Text(
-                    text = "Escolher Exercício",
+                    text = "Select Exercise",
                     color = OneUiHealthGreen,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Bold

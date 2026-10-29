@@ -78,8 +78,8 @@ class WorkoutRepository(private val context: Context) {
         val newRoutine = WorkoutRoutine(
             id = "custom_${UUID.randomUUID().toString().take(8)}",
             name = name,
-            subtitle = "Treino Personalizado 5D Ab",
-            description = "Treino abdominal 5D personalizado no Galaxy Watch8 Classic.",
+            subtitle = "Custom 5D Ab Routine",
+            description = "Custom 5D Ab workout on Galaxy Watch8 Classic.",
             isPreset = false,
             steps = listOf(
                 WorkoutStep(
@@ -88,7 +88,7 @@ class WorkoutRepository(private val context: Context) {
                     targetValue = 30,
                     repPaceMs = 2000L,
                     restAfterSeconds = 20,
-                    roundLabel = "Série 1"
+                    roundLabel = "Set 1"
                 ),
                 WorkoutStep(
                     stepId = UUID.randomUUID().toString().take(8),
@@ -96,7 +96,7 @@ class WorkoutRepository(private val context: Context) {
                     targetValue = 40,
                     repPaceMs = 1800L,
                     restAfterSeconds = 20,
-                    roundLabel = "Série 2"
+                    roundLabel = "Set 2"
                 ),
                 WorkoutStep(
                     stepId = UUID.randomUUID().toString().take(8),
@@ -104,7 +104,7 @@ class WorkoutRepository(private val context: Context) {
                     targetValue = 30,
                     repPaceMs = 1900L,
                     restAfterSeconds = 20,
-                    roundLabel = "Série 3"
+                    roundLabel = "Set 3"
                 ),
                 WorkoutStep(
                     stepId = UUID.randomUUID().toString().take(8),
@@ -112,7 +112,7 @@ class WorkoutRepository(private val context: Context) {
                     targetValue = 60,
                     repPaceMs = 1000L,
                     restAfterSeconds = 0,
-                    roundLabel = "Série 4"
+                    roundLabel = "Set 4"
                 )
             )
         )
@@ -156,7 +156,7 @@ class WorkoutRepository(private val context: Context) {
     }
 
     companion object {
-        private val KEY_ROUTINES = stringPreferencesKey("saved_routines_v2_json")
+        private val KEY_ROUTINES = stringPreferencesKey("saved_routines_v3_json")
         private val KEY_SETTINGS = stringPreferencesKey("workout_settings_json")
         private val KEY_HISTORY = stringPreferencesKey("workout_history_json")
 

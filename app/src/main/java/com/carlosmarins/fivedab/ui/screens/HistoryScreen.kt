@@ -75,18 +75,18 @@ fun HistoryScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "Histórico",
+                        text = "History",
                         color = Color.White,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "$streak dias seguidos • $totalRepsAllTime reps",
+                        text = "$streak day streak • $totalRepsAllTime reps",
                         color = OneUiHealthGreen,
                         fontSize = 10.sp
                     )
                     Text(
-                        text = String.format(Locale.US, "%.0f kcal acumuladas", totalKcalAllTime),
+                        text = String.format(Locale.US, "%.0f kcal total", totalKcalAllTime),
                         color = OneUiTextSecondary,
                         fontSize = 9.sp
                     )
@@ -99,12 +99,12 @@ fun HistoryScreen(
                     label = {
                         Column {
                             Text(
-                                text = "Sincronizar Samsung Health",
+                                text = "Sync Samsung Health",
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
                             Text(
-                                text = "Permissões Health Connect",
+                                text = "Health Connect permissions",
                                 fontSize = 9.sp,
                                 color = OneUiTextSecondary
                             )
@@ -119,7 +119,7 @@ fun HistoryScreen(
             if (history.isEmpty()) {
                 item {
                     Text(
-                        text = "Nenhum treino registrado ainda.",
+                        text = "No workouts recorded yet.",
                         color = OneUiTextSecondary,
                         fontSize = 10.sp,
                         textAlign = TextAlign.Center,
@@ -163,7 +163,7 @@ fun HistoryScreen(
                             fontSize = 9.sp
                         )
                         Text(
-                            text = "$dateStr • FC méd ${if (item.avgHeartRateBpm > 0) "${item.avgHeartRateBpm} bpm" else "--"}",
+                            text = "$dateStr • Avg HR ${if (item.avgHeartRateBpm > 0) "${item.avgHeartRateBpm} bpm" else "--"}",
                             color = OneUiTextSecondary,
                             fontSize = 8.sp
                         )

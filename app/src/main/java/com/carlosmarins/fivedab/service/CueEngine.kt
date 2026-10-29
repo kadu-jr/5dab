@@ -1,9 +1,11 @@
 package com.carlosmarins.fivedab.service
 
 import android.content.Context
+import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.ToneGenerator
 import android.os.Build
+import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
@@ -21,7 +23,7 @@ class CueEngine(context: Context) {
     }
 
     private var toneGenerator: ToneGenerator? = runCatching {
-        ToneGenerator(AudioManager.STREAM_NOTIFICATION, 85)
+        ToneGenerator(AudioManager.STREAM_ALARM, 90)
     }.getOrNull()
 
     private var tts: TextToSpeech? = null
@@ -30,6 +32,11 @@ class CueEngine(context: Context) {
     init {
         tts = TextToSpeech(context.applicationContext) { status ->
             if (status == TextToSpeech.SUCCESS) {
+                val watchSpeakerAttributes = AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .build()
+                tts?.setAudioAttributes(watchSpeakerAttributes)
                 val result = tts?.setLanguage(Locale.US)
                 isTtsReady = result != TextToSpeech.LANG_MISSING_DATA &&
                     result != TextToSpeech.LANG_NOT_SUPPORTED
@@ -193,7 +200,10 @@ class CueEngine(context: Context) {
 
     private fun speak(text: String) {
         runCatching {
-            tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "cue_${System.currentTimeMillis()}")
+            val params = Bundle().apply {
+                putInt(TextToSpeech.Engine.KEY_PARAM_STREAM, AudioManager.STREAM_ALARM)
+            }
+            tts?.speak(text, TextToSpeech.QUEUE_FLUSH, params, "cue_${System.currentTimeMillis()}")
         }
     }
 

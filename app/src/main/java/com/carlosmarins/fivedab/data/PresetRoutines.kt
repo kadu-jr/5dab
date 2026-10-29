@@ -16,7 +16,7 @@ object PresetRoutines {
     const val EX_RUSSIAN_TWIST_5KG_LEGS_UP = "russian_twist_5kg_legs_up"
     const val EX_BRIDGE_ALT_LEG_LIFT = "bridge_alt_leg_lift"
 
-    // Additional exercises in catalog for building Quinta & Sexta
+    // Additional exercises in catalog for building Thursday & Friday
     const val EX_REVERSE_CRUNCH = "reverse_crunch"
     const val EX_BICYCLE_CRUNCH = "bicycle_crunch"
     const val EX_LYING_LEG_RAISE = "lying_leg_raise"
@@ -30,254 +30,254 @@ object PresetRoutines {
     const val EX_COBRA_STRETCH = "cobra_stretch"
 
     val exerciseCatalog: List<ExerciseDefinition> = listOf(
-        // --- Segunda-feira Core Moves ---
+        // --- Monday Core Moves ---
         ExerciseDefinition(
             id = EX_KNEE_TOUCH_CRUNCH,
             name = "Knee Touch",
-            subtitle = "Deitado • Tocar nos joelhos",
+            subtitle = "Lying • Reach & touch knees",
             dimension = AbDimension.FLEXION,
             mode = StepMode.REPS,
             defaultTarget = 30,
             defaultRepPaceMs = 2000L,
             metValue = 4.5,
-            coachingCue = "Suba o tronco deslizando as mãos até tocar os joelhos."
+            coachingCue = "Curl upper torso and slide hands up to touch your knees."
         ),
         ExerciseDefinition(
             id = EX_ALTERNATE_HEEL_TOUCH,
             name = "Heel Touch",
-            subtitle = "Deitado • Toque alternado calcanhar",
+            subtitle = "Lying • Alternating heel touches",
             dimension = AbDimension.LATERAL_FLEXION,
             mode = StepMode.REPS,
             defaultTarget = 30,
             defaultRepPaceMs = 1800L,
             metValue = 4.2,
-            coachingCue = "Incline o tronco lateralmente tocando o calcanhar esquerdo e direito."
+            coachingCue = "Crunch side-to-side tapping left and right heels."
         ),
         ExerciseDefinition(
             id = EX_STRAIGHT_CRUNCH,
-            name = "Flexão Reta (Deitado)",
-            subtitle = "40 flexões abdominais retas",
+            name = "Straight Crunch (Lying)",
+            subtitle = "40 straight lying crunches",
             dimension = AbDimension.FLEXION,
             mode = StepMode.REPS,
             defaultTarget = 40,
             defaultRepPaceMs = 1800L,
             metValue = 4.6,
-            coachingCue = "Deitado de costas, contraia o abdômen tirando as escápulas do chão."
+            coachingCue = "Lie flat on your back and curl shoulder blades off the mat."
         ),
         ExerciseDefinition(
             id = EX_RUSSIAN_TWIST_5KG,
             name = "Russian Twist (5kg)",
-            subtitle = "Rotação de tronco com 5kg",
+            subtitle = "Weighted 5kg torso rotation",
             dimension = AbDimension.ROTATION,
             mode = StepMode.REPS,
             defaultTarget = 30,
             defaultRepPaceMs = 1900L,
             metValue = 5.2,
-            coachingCue = "Segure a anilha/peso de 5kg e gire o tronco de um lado para o outro."
+            coachingCue = "Hold a 5kg plate/dumbbell and rotate ribcage side to side."
         ),
         ExerciseDefinition(
             id = EX_PLANK_HOLD,
             name = "Plank 60s",
-            subtitle = "Prancha isométrica 60s",
+            subtitle = "Forearm isometric plank",
             dimension = AbDimension.COUNTER_EXTENSION,
             mode = StepMode.TIMED,
             defaultTarget = 60,
             defaultRepPaceMs = 1000L,
             metValue = 4.5,
-            coachingCue = "Apoie os antebraços, alinhe o corpo e mantenha o abdômen travado."
+            coachingCue = "Elbows under shoulders, brace core and glutes in a straight line."
         ),
 
-        // --- Terça-feira Core Moves ---
+        // --- Tuesday Core Moves ---
         ExerciseDefinition(
             id = EX_LEFT_SIDE_CRUNCH,
-            name = "Flexão Lateral Esq.",
-            subtitle = "20 flexões lado esquerdo (deitado)",
+            name = "Left Side Crunch (Lying)",
+            subtitle = "20 lying left oblique crunches",
             dimension = AbDimension.LATERAL_FLEXION,
             mode = StepMode.REPS,
             defaultTarget = 20,
             defaultRepPaceMs = 2000L,
             metValue = 4.3,
-            coachingCue = "Deitado, contraia o oblíquo esquerdo subindo em direção ao quadril."
+            coachingCue = "Lie on your side and crunch left oblique upward for 20 reps."
         ),
         ExerciseDefinition(
             id = EX_RIGHT_SIDE_CRUNCH,
-            name = "Flexão Lateral Dir.",
-            subtitle = "20 flexões lado direito (deitado)",
+            name = "Right Side Crunch (Lying)",
+            subtitle = "20 lying right oblique crunches",
             dimension = AbDimension.LATERAL_FLEXION,
             mode = StepMode.REPS,
             defaultTarget = 20,
             defaultRepPaceMs = 2000L,
             metValue = 4.3,
-            coachingCue = "Deitado, contraia o oblíquo direito subindo em direção ao quadril."
+            coachingCue = "Lie on your side and crunch right oblique upward for 20 reps."
         ),
         ExerciseDefinition(
             id = EX_SEATED_LEG_TUCK,
-            name = "Canivete Sentado (In & Out)",
-            subtitle = "Só quadril no chão • Estende e puxa perna",
+            name = "Seated Knee Tuck (In & Out)",
+            subtitle = "Balance on glutes • Extend & pull legs",
             dimension = AbDimension.FLEXION,
             mode = StepMode.REPS,
             defaultTarget = 25,
             defaultRepPaceMs = 2100L,
             metValue = 5.0,
-            coachingCue = "Equilibrado no quadril, estenda as pernas à frente e recolha ao peito."
+            coachingCue = "Balance on tailbone, extend legs out straight and pull knees back to chest."
         ),
         ExerciseDefinition(
             id = EX_RUSSIAN_TWIST_LEGS_UP,
-            name = "Russian Twist (Perna Suspensa)",
-            subtitle = "Sem peso • Pernas suspensas no ar",
+            name = "Russian Twist (Legs Up)",
+            subtitle = "Bodyweight • Feet suspended in air",
             dimension = AbDimension.ROTATION,
             mode = StepMode.REPS,
             defaultTarget = 30,
             defaultRepPaceMs = 1800L,
             metValue = 5.0,
-            coachingCue = "Mantenha os pés fora do chão em V e gire o tronco de lado a lado."
+            coachingCue = "Keep feet suspended off the floor in a V-sit and rotate torso."
         ),
 
-        // --- Quarta-feira Core Moves ---
+        // --- Wednesday Core Moves ---
         ExerciseDefinition(
             id = EX_RUSSIAN_TWIST_5KG_LEGS_UP,
-            name = "Russian Twist 5kg (Suspensa)",
-            subtitle = "Com 5kg • Pernas suspensas no ar",
+            name = "Russian Twist 5kg (Legs Up)",
+            subtitle = "5kg weight • Feet suspended in air",
             dimension = AbDimension.ROTATION,
             mode = StepMode.REPS,
             defaultTarget = 30,
             defaultRepPaceMs = 2000L,
             metValue = 5.6,
-            coachingCue = "Pés suspensos e peso de 5kg em mãos; gire controlando a estabilidade."
+            coachingCue = "Keep feet suspended while rotating a 5kg weight side to side."
         ),
         ExerciseDefinition(
             id = EX_BRIDGE_ALT_LEG_LIFT,
-            name = "Ponte + Eleva Perna Alternada",
-            subtitle = "Ponte aguda • Levanta 1 perna de cada vez",
+            name = "High Bridge Alt. Leg Lift",
+            subtitle = "Acute bridge • Lift one leg at a time",
             dimension = AbDimension.COUNTER_EXTENSION,
             mode = StepMode.REPS,
             defaultTarget = 24,
             defaultRepPaceMs = 2300L,
             metValue = 4.8,
-            coachingCue = "Mantenha a ponte firme e eleve uma perna de cada vez sem cair o quadril."
+            coachingCue = "Hold a high bridge and alternate lifting one leg at a time without dropping hips."
         ),
 
-        // --- Extras no Catálogo para montar Quinta e Sexta ---
+        // --- Extra Catalog Moves for Customizing Thursday & Friday ---
         ExerciseDefinition(
             id = EX_REVERSE_CRUNCH,
-            name = "Abdominal Infra Reverso",
-            subtitle = "Deitado • Eleva quadril e joelhos",
+            name = "Reverse Crunch",
+            subtitle = "Lying • Curl hips & knees up",
             dimension = AbDimension.FLEXION,
             mode = StepMode.REPS,
             defaultTarget = 30,
             defaultRepPaceMs = 2200L,
             metValue = 4.8,
-            coachingCue = "Deitado, puxe os joelhos tirando o quadril do chão com o abdômen inferior."
+            coachingCue = "Curl pelvis off the mat toward ribs using your lower abs."
         ),
         ExerciseDefinition(
             id = EX_BICYCLE_CRUNCH,
-            name = "Abdominal Bicicleta",
-            subtitle = "Deitado • Cotovelo no joelho oposto",
+            name = "Bicycle Crunch",
+            subtitle = "Lying • Alternating elbow to knee",
             dimension = AbDimension.ROTATION,
             mode = StepMode.REPS,
             defaultTarget = 30,
             defaultRepPaceMs = 1800L,
             metValue = 5.0,
-            coachingCue = "Alterne cotovelo direito no joelho esquerdo pedalando no ar."
+            coachingCue = "Alternate touching opposite elbow to knee while pedaling legs."
         ),
         ExerciseDefinition(
             id = EX_LYING_LEG_RAISE,
-            name = "Elevação de Pernas (Deitado)",
-            subtitle = "Pernas retas subindo até 90°",
+            name = "Lying Leg Raise",
+            subtitle = "Straight legs up to 90°",
             dimension = AbDimension.FLEXION,
             mode = StepMode.REPS,
             defaultTarget = 20,
             defaultRepPaceMs = 2500L,
             metValue = 4.9,
-            coachingCue = "Suba as pernas estendidas e desça devagar sem arquear a lombar."
+            coachingCue = "Raise straight legs to vertical and lower slowly without arching lower back."
         ),
         ExerciseDefinition(
             id = EX_FLUTTER_KICKS,
-            name = "Tesoura (Flutter Kicks)",
-            subtitle = "Batida alternada de pernas retas",
+            name = "Flutter Kicks",
+            subtitle = "Alternating straight-leg kicks",
             dimension = AbDimension.FLEXION,
             mode = StepMode.TIMED,
             defaultTarget = 40,
             defaultRepPaceMs = 1000L,
             metValue = 5.0,
-            coachingCue = "Pernas quase rentes ao chão alternando movimentos curtos."
+            coachingCue = "Hover legs just above the floor and alternate short rapid kicks."
         ),
         ExerciseDefinition(
             id = EX_PLANK_LEG_LIFT,
-            name = "Prancha + Eleva Perna",
-            subtitle = "Prancha elevando 1 perna por vez",
+            name = "Plank Alt. Leg Lift",
+            subtitle = "Forearm plank lifting 1 leg at a time",
             dimension = AbDimension.COUNTER_EXTENSION,
             mode = StepMode.REPS,
             defaultTarget = 20,
             defaultRepPaceMs = 2200L,
             metValue = 5.0,
-            coachingCue = "Na posição de prancha, levante uma perna de cada vez mantendo o tronco reto."
+            coachingCue = "In forearm plank, alternate lifting each leg without twisting hips."
         ),
         ExerciseDefinition(
             id = EX_BEAR_PLANK,
-            name = "Prancha 4 Apoios (Bear Hold)",
-            subtitle = "Joelhos a 2cm do chão em isometria",
+            name = "4-Point Bear Plank",
+            subtitle = "Knees hovering 2cm off floor",
             dimension = AbDimension.COUNTER_EXTENSION,
             mode = StepMode.TIMED,
             defaultTarget = 45,
             defaultRepPaceMs = 1000L,
             metValue = 4.7,
-            coachingCue = "Mãos sob os ombros e joelhos dobrados suspensos a 2cm do chão."
+            coachingCue = "Hands under shoulders, knees bent 90° hovering just off the mat."
         ),
         ExerciseDefinition(
             id = EX_LEFT_SIDE_PLANK,
-            name = "Prancha Lateral Esq.",
-            subtitle = "Isometria lateral esquerda",
+            name = "Left Side Plank",
+            subtitle = "Left oblique isometric hold",
             dimension = AbDimension.COUNTER_LATERAL_FLEXION,
             mode = StepMode.TIMED,
             defaultTarget = 30,
             defaultRepPaceMs = 1000L,
             metValue = 4.4,
-            coachingCue = "Apoie o antebraço esquerdo e segure o quadril alto alinhado."
+            coachingCue = "Support on left forearm and hold hips high in a straight line."
         ),
         ExerciseDefinition(
             id = EX_RIGHT_SIDE_PLANK,
-            name = "Prancha Lateral Dir.",
-            subtitle = "Isometria lateral direita",
+            name = "Right Side Plank",
+            subtitle = "Right oblique isometric hold",
             dimension = AbDimension.COUNTER_LATERAL_FLEXION,
             mode = StepMode.TIMED,
             defaultTarget = 30,
             defaultRepPaceMs = 1000L,
             metValue = 4.4,
-            coachingCue = "Apoie o antebraço direito e segure o quadril alto alinhado."
+            coachingCue = "Support on right forearm and hold hips high in a straight line."
         ),
         ExerciseDefinition(
             id = EX_MOUNTAIN_CLIMBER,
-            name = "Mountain Climber (Escalador)",
-            subtitle = "Prancha alta puxando joelhos",
+            name = "Mountain Climber",
+            subtitle = "High plank alternating knee drives",
             dimension = AbDimension.FLEXION,
             mode = StepMode.REPS,
             defaultTarget = 30,
             defaultRepPaceMs = 1500L,
             metValue = 6.0,
-            coachingCue = "Em prancha alta, puxe os joelhos alternadamente em direção ao peito."
+            coachingCue = "In high plank, drive knees alternately toward chest."
         ),
         ExerciseDefinition(
             id = EX_STOMACH_VACUUM,
             name = "Stomach Vacuum",
-            subtitle = "Contração profunda do transverso",
+            subtitle = "Deep transverse core hold",
             dimension = AbDimension.RECOVERY,
             mode = StepMode.TIMED,
             defaultTarget = 25,
             defaultRepPaceMs = 1000L,
             metValue = 3.0,
-            coachingCue = "Solte todo o ar e sugue o umbigo em direção à coluna."
+            coachingCue = "Exhale fully and draw navel deep toward spine."
         ),
         ExerciseDefinition(
             id = EX_COBRA_STRETCH,
-            name = "Alongamento Cobra",
-            subtitle = "Alongamento final de abdômen",
+            name = "Cobra Ab Stretch",
+            subtitle = "Abdominal fascia cooldown stretch",
             dimension = AbDimension.RECOVERY,
             mode = StepMode.TIMED,
             defaultTarget = 30,
             defaultRepPaceMs = 1000L,
             metValue = 2.5,
-            coachingCue = "De bruços, estenda os braços alongando toda a parede abdominal."
+            coachingCue = "Lie prone and press chest gently upward to stretch abs."
         )
     )
 
@@ -289,92 +289,92 @@ object PresetRoutines {
     }
 
     /**
-     * SEGUNDA: Knee Touch / Heel Touch / 40 flexões retas (deitado) / Russian Twist com 5kg / Plank 60s
+     * MONDAY: Knee Touch / Heel Touch / 40 Straight Crunches / Russian Twist 5kg / Plank 60s
      */
     val segundaRoutine = WorkoutRoutine(
         id = "preset_segunda",
-        name = "Seg • 5D Ab",
-        subtitle = "Knee & Heel Touch • 40 Retas • Twist 5kg • Plank",
-        description = "Treino de Segunda: Knee Touch, Heel Touch, 40 Flexões Retas deitado, Russian Twist com 5kg e Plank 60s.",
+        name = "Mon • 5D Ab",
+        subtitle = "Knee & Heel Touch • 40 Crunch • Twist 5kg • Plank",
+        description = "Monday: Knee Touch, Heel Touch, 40 Straight Lying Crunches, Russian Twist 5kg, and Plank 60s.",
         isPreset = true,
         steps = listOf(
-            WorkoutStep("seg_1", EX_KNEE_TOUCH_CRUNCH, targetValue = 30, repPaceMs = 2000L, restAfterSeconds = 20, roundLabel = "Série 1/5"),
-            WorkoutStep("seg_2", EX_ALTERNATE_HEEL_TOUCH, targetValue = 30, repPaceMs = 1800L, restAfterSeconds = 20, roundLabel = "Série 2/5"),
-            WorkoutStep("seg_3", EX_STRAIGHT_CRUNCH, targetValue = 40, repPaceMs = 1800L, restAfterSeconds = 25, roundLabel = "Série 3/5"),
-            WorkoutStep("seg_4", EX_RUSSIAN_TWIST_5KG, targetValue = 30, repPaceMs = 1900L, restAfterSeconds = 25, roundLabel = "Série 4/5"),
-            WorkoutStep("seg_5", EX_PLANK_HOLD, targetValue = 60, repPaceMs = 1000L, restAfterSeconds = 0, roundLabel = "Série 5/5")
+            WorkoutStep("seg_1", EX_KNEE_TOUCH_CRUNCH, targetValue = 30, repPaceMs = 2000L, restAfterSeconds = 20, roundLabel = "Set 1/5"),
+            WorkoutStep("seg_2", EX_ALTERNATE_HEEL_TOUCH, targetValue = 30, repPaceMs = 1800L, restAfterSeconds = 20, roundLabel = "Set 2/5"),
+            WorkoutStep("seg_3", EX_STRAIGHT_CRUNCH, targetValue = 40, repPaceMs = 1800L, restAfterSeconds = 25, roundLabel = "Set 3/5"),
+            WorkoutStep("seg_4", EX_RUSSIAN_TWIST_5KG, targetValue = 30, repPaceMs = 1900L, restAfterSeconds = 25, roundLabel = "Set 4/5"),
+            WorkoutStep("seg_5", EX_PLANK_HOLD, targetValue = 60, repPaceMs = 1000L, restAfterSeconds = 0, roundLabel = "Set 5/5")
         )
     )
 
     /**
-     * TERÇA: 20 flexões pra cada lado (deitado) / Canivete sentado (estende e traz perna) /
-     * Russian Twist com perna suspensa (sem peso) / Plank 60s
+     * TUESDAY: 20 Side Crunches each side / Seated Knee Tuck (In & Out) /
+     * Russian Twist (Legs Up, no weight) / Plank 60s
      */
     val tercaRoutine = WorkoutRoutine(
         id = "preset_terca",
-        name = "Ter • 5D Ab",
-        subtitle = "20/20 Laterais • Canivete • Twist Susp. • Plank",
-        description = "Treino de Terça: 20 Flexões para cada lado deitado, Canivete Sentado (estende e puxa a perna), Russian Twist com perna suspensa e Plank 60s.",
+        name = "Tue • 5D Ab",
+        subtitle = "20/20 Side Crunch • Seated Tuck • Twist • Plank",
+        description = "Tuesday: 20 Lying Side Crunches each side, Seated Knee Tuck (In & Out), Russian Twist Legs Up, and Plank 60s.",
         isPreset = true,
         steps = listOf(
-            WorkoutStep("ter_1", EX_LEFT_SIDE_CRUNCH, targetValue = 20, repPaceMs = 2000L, restAfterSeconds = 10, roundLabel = "Série 1/5"),
-            WorkoutStep("ter_2", EX_RIGHT_SIDE_CRUNCH, targetValue = 20, repPaceMs = 2000L, restAfterSeconds = 20, roundLabel = "Série 2/5"),
-            WorkoutStep("ter_3", EX_SEATED_LEG_TUCK, targetValue = 25, repPaceMs = 2100L, restAfterSeconds = 25, roundLabel = "Série 3/5"),
-            WorkoutStep("ter_4", EX_RUSSIAN_TWIST_LEGS_UP, targetValue = 30, repPaceMs = 1800L, restAfterSeconds = 25, roundLabel = "Série 4/5"),
-            WorkoutStep("ter_5", EX_PLANK_HOLD, targetValue = 60, repPaceMs = 1000L, restAfterSeconds = 0, roundLabel = "Série 5/5")
+            WorkoutStep("ter_1", EX_LEFT_SIDE_CRUNCH, targetValue = 20, repPaceMs = 2000L, restAfterSeconds = 10, roundLabel = "Set 1/5"),
+            WorkoutStep("ter_2", EX_RIGHT_SIDE_CRUNCH, targetValue = 20, repPaceMs = 2000L, restAfterSeconds = 20, roundLabel = "Set 2/5"),
+            WorkoutStep("ter_3", EX_SEATED_LEG_TUCK, targetValue = 25, repPaceMs = 2100L, restAfterSeconds = 25, roundLabel = "Set 3/5"),
+            WorkoutStep("ter_4", EX_RUSSIAN_TWIST_LEGS_UP, targetValue = 30, repPaceMs = 1800L, restAfterSeconds = 25, roundLabel = "Set 4/5"),
+            WorkoutStep("ter_5", EX_PLANK_HOLD, targetValue = 60, repPaceMs = 1000L, restAfterSeconds = 0, roundLabel = "Set 5/5")
         )
     )
 
     /**
-     * QUARTA: 40 flexões deitado / Russian Twist com 5kg e perna suspensa /
-     * Ponte aguda levantando uma perna de cada vez (+ Plank 60s)
+     * WEDNESDAY: 40 Straight Crunches / Russian Twist 5kg (Legs Up) /
+     * High Bridge Alternating Leg Lift
      */
     val quartaRoutine = WorkoutRoutine(
         id = "preset_quarta",
-        name = "Qua • 5D Ab",
-        subtitle = "40 Retas • Twist 5kg Susp. • Ponte Unilateral",
-        description = "Treino de Quarta: 40 Flexões deitado, Russian Twist com 5kg e perna suspensa, e Ponte aguda levantando uma perna de cada vez.",
+        name = "Wed • 5D Ab",
+        subtitle = "40 Crunch • Twist 5kg Legs Up • Bridge Leg Lift",
+        description = "Wednesday: 40 Straight Lying Crunches, Russian Twist 5kg with Legs Up, and High Bridge Alternating Leg Lift.",
         isPreset = true,
         steps = listOf(
-            WorkoutStep("qua_1", EX_STRAIGHT_CRUNCH, targetValue = 40, repPaceMs = 1800L, restAfterSeconds = 25, roundLabel = "Série 1/3"),
-            WorkoutStep("qua_2", EX_RUSSIAN_TWIST_5KG_LEGS_UP, targetValue = 30, repPaceMs = 2000L, restAfterSeconds = 25, roundLabel = "Série 2/3"),
-            WorkoutStep("qua_3", EX_BRIDGE_ALT_LEG_LIFT, targetValue = 24, repPaceMs = 2300L, restAfterSeconds = 0, roundLabel = "Série 3/3")
+            WorkoutStep("qua_1", EX_STRAIGHT_CRUNCH, targetValue = 40, repPaceMs = 1800L, restAfterSeconds = 25, roundLabel = "Set 1/3"),
+            WorkoutStep("qua_2", EX_RUSSIAN_TWIST_5KG_LEGS_UP, targetValue = 30, repPaceMs = 2000L, restAfterSeconds = 25, roundLabel = "Set 2/3"),
+            WorkoutStep("qua_3", EX_BRIDGE_ALT_LEG_LIFT, targetValue = 24, repPaceMs = 2300L, restAfterSeconds = 0, roundLabel = "Set 3/3")
         )
     )
 
     /**
-     * QUINTA: Template pronto para customizar
+     * THURSDAY: Ready to customize
      */
     val quintaRoutine = WorkoutRoutine(
         id = "preset_quinta",
-        name = "Qui • 5D Ab",
-        subtitle = "Infra • Bicicleta • Prancha Lateral • Plank",
-        description = "Treino de Quinta (personalize os exercícios e repetições tocando nas séries).",
+        name = "Thu • 5D Ab",
+        subtitle = "Reverse • Bicycle • Side Plank • Plank 60s",
+        description = "Thursday template (tap any set to customize exercises and reps).",
         isPreset = true,
         steps = listOf(
-            WorkoutStep("qui_1", EX_REVERSE_CRUNCH, targetValue = 30, repPaceMs = 2200L, restAfterSeconds = 20, roundLabel = "Série 1/5"),
-            WorkoutStep("qui_2", EX_BICYCLE_CRUNCH, targetValue = 30, repPaceMs = 1800L, restAfterSeconds = 20, roundLabel = "Série 2/5"),
-            WorkoutStep("qui_3", EX_LEFT_SIDE_PLANK, targetValue = 30, repPaceMs = 1000L, restAfterSeconds = 10, roundLabel = "Série 3/5"),
-            WorkoutStep("qui_4", EX_RIGHT_SIDE_PLANK, targetValue = 30, repPaceMs = 1000L, restAfterSeconds = 20, roundLabel = "Série 4/5"),
-            WorkoutStep("qui_5", EX_PLANK_HOLD, targetValue = 60, repPaceMs = 1000L, restAfterSeconds = 0, roundLabel = "Série 5/5")
+            WorkoutStep("qui_1", EX_REVERSE_CRUNCH, targetValue = 30, repPaceMs = 2200L, restAfterSeconds = 20, roundLabel = "Set 1/5"),
+            WorkoutStep("qui_2", EX_BICYCLE_CRUNCH, targetValue = 30, repPaceMs = 1800L, restAfterSeconds = 20, roundLabel = "Set 2/5"),
+            WorkoutStep("qui_3", EX_LEFT_SIDE_PLANK, targetValue = 30, repPaceMs = 1000L, restAfterSeconds = 10, roundLabel = "Set 3/5"),
+            WorkoutStep("qui_4", EX_RIGHT_SIDE_PLANK, targetValue = 30, repPaceMs = 1000L, restAfterSeconds = 20, roundLabel = "Set 4/5"),
+            WorkoutStep("qui_5", EX_PLANK_HOLD, targetValue = 60, repPaceMs = 1000L, restAfterSeconds = 0, roundLabel = "Set 5/5")
         )
     )
 
     /**
-     * SEXTA: Template pronto para customizar
+     * FRIDAY: Ready to customize
      */
     val sextaRoutine = WorkoutRoutine(
         id = "preset_sexta",
-        name = "Sex • 5D Ab",
-        subtitle = "40 Retas • Canivete • Twist 5kg • Ponte • Plank",
-        description = "Treino de Sexta (personalize os exercícios e repetições tocando nas séries).",
+        name = "Fri • 5D Ab",
+        subtitle = "40 Crunch • Seated Tuck • Twist 5kg • Bridge • Plank",
+        description = "Friday template (tap any set to customize exercises and reps).",
         isPreset = true,
         steps = listOf(
-            WorkoutStep("sex_1", EX_STRAIGHT_CRUNCH, targetValue = 40, repPaceMs = 1800L, restAfterSeconds = 20, roundLabel = "Série 1/5"),
-            WorkoutStep("sex_2", EX_SEATED_LEG_TUCK, targetValue = 25, repPaceMs = 2100L, restAfterSeconds = 20, roundLabel = "Série 2/5"),
-            WorkoutStep("sex_3", EX_RUSSIAN_TWIST_5KG_LEGS_UP, targetValue = 30, repPaceMs = 2000L, restAfterSeconds = 20, roundLabel = "Série 3/5"),
-            WorkoutStep("sex_4", EX_BRIDGE_ALT_LEG_LIFT, targetValue = 24, repPaceMs = 2300L, restAfterSeconds = 20, roundLabel = "Série 4/5"),
-            WorkoutStep("sex_5", EX_PLANK_HOLD, targetValue = 60, repPaceMs = 1000L, restAfterSeconds = 0, roundLabel = "Série 5/5")
+            WorkoutStep("sex_1", EX_STRAIGHT_CRUNCH, targetValue = 40, repPaceMs = 1800L, restAfterSeconds = 20, roundLabel = "Set 1/5"),
+            WorkoutStep("sex_2", EX_SEATED_LEG_TUCK, targetValue = 25, repPaceMs = 2100L, restAfterSeconds = 20, roundLabel = "Set 2/5"),
+            WorkoutStep("sex_3", EX_RUSSIAN_TWIST_5KG_LEGS_UP, targetValue = 30, repPaceMs = 2000L, restAfterSeconds = 20, roundLabel = "Set 3/5"),
+            WorkoutStep("sex_4", EX_BRIDGE_ALT_LEG_LIFT, targetValue = 24, repPaceMs = 2300L, restAfterSeconds = 20, roundLabel = "Set 4/5"),
+            WorkoutStep("sex_5", EX_PLANK_HOLD, targetValue = 60, repPaceMs = 1000L, restAfterSeconds = 0, roundLabel = "Set 5/5")
         )
     )
 

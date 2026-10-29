@@ -71,7 +71,7 @@ fun WorkoutSummaryScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "Treino Concluído",
+                        text = "Workout Complete",
                         color = OneUiHealthGreen,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold
@@ -87,20 +87,20 @@ fun WorkoutSummaryScreen(
                 }
             }
 
-            // Stats Grid Row 1: Duração & Calorias
+            // Stats Grid Row 1: Duration & Calories
             item {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     MetricBox(
-                        label = "DURAÇÃO",
+                        label = "DURATION",
                         value = formatMinutesSeconds(session.activeDurationSeconds),
                         accent = OneUiHealthGreen,
                         modifier = Modifier.weight(1f)
                     )
                     MetricBox(
-                        label = "CALORIAS",
+                        label = "CALORIES",
                         value = String.format(Locale.US, "%.0f kcal", session.caloriesBurnedKcal),
                         accent = OneUiCalorieOrange,
                         modifier = Modifier.weight(1f)
@@ -108,20 +108,20 @@ fun WorkoutSummaryScreen(
                 }
             }
 
-            // Stats Grid Row 2: Repetições & Isometria
+            // Stats Grid Row 2: Reps & Plank Hold
             item {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     MetricBox(
-                        label = "REPETIÇÕES",
+                        label = "TOTAL REPS",
                         value = "${session.totalRepsCompleted}",
                         accent = Color.White,
                         modifier = Modifier.weight(1f)
                     )
                     MetricBox(
-                        label = "PRANCHA",
+                        label = "HOLD TIME",
                         value = "${session.totalHoldSecondsCompleted}s",
                         accent = OneUiBlue,
                         modifier = Modifier.weight(1f)
@@ -129,20 +129,20 @@ fun WorkoutSummaryScreen(
                 }
             }
 
-            // Stats Grid Row 3: FC Média & FC Máxima
+            // Stats Grid Row 3: Avg HR & Max HR
             item {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     MetricBox(
-                        label = "FC MÉDIA",
+                        label = "AVG HR",
                         value = if (session.avgHeartRateBpm > 0) "${session.avgHeartRateBpm} bpm" else "--",
                         accent = OneUiHeartRed,
                         modifier = Modifier.weight(1f)
                     )
                     MetricBox(
-                        label = "FC MÁX",
+                        label = "MAX HR",
                         value = if (session.maxHeartRateBpm > 0) "${session.maxHeartRateBpm} bpm" else "--",
                         accent = OneUiHeartRed,
                         modifier = Modifier.weight(1f)
@@ -154,9 +154,9 @@ fun WorkoutSummaryScreen(
             item {
                 Text(
                     text = if (session.syncedToHealth) {
-                        "✓ Sincronizado com Samsung Health"
+                        "✓ Synced to Samsung Health"
                     } else {
-                        "Salvo no relógio"
+                        "Saved on watch"
                     },
                     color = if (session.syncedToHealth) OneUiHealthGreen else OneUiTextSecondary,
                     fontSize = 9.sp,
@@ -165,13 +165,13 @@ fun WorkoutSummaryScreen(
                 )
             }
 
-            // Botão Concluir
+            // Done Button
             item {
                 Chip(
                     onClick = onDone,
                     label = {
                         Text(
-                            text = "Concluir",
+                            text = "Done",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.Black

@@ -75,7 +75,7 @@ fun SettingsScreen(
         ) {
             item {
                 Text(
-                    text = "Configurações",
+                    text = "Settings",
                     color = Color.White,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold
@@ -88,9 +88,9 @@ fun SettingsScreen(
                     onCheckedChange = { onToggleAutoPace() },
                     label = {
                         Column {
-                            Text("Ritmo Automático", fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+                            Text("Auto-Pace Reps", fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
                             Text(
-                                "Conta reps pelo temporizador",
+                                "Count reps automatically by pace",
                                 fontSize = 8.sp,
                                 color = OneUiTextSecondary
                             )
@@ -116,9 +116,9 @@ fun SettingsScreen(
                     onCheckedChange = { onToggleHaptics() },
                     label = {
                         Column {
-                            Text("Vibração no Pulso", fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+                            Text("Wrist Haptics", fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
                             Text(
-                                "Vibra a cada repetição e alerta",
+                                "Vibrate on rep cadence & alerts",
                                 fontSize = 8.sp,
                                 color = OneUiTextSecondary
                             )
@@ -144,9 +144,9 @@ fun SettingsScreen(
                     onCheckedChange = { onToggleVoiceCoach() },
                     label = {
                         Column {
-                            Text("Guia de Voz (TTS)", fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+                            Text("Voice Coach (Watch Speaker)", fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
                             Text(
-                                "Anuncia exercícios e contagem",
+                                "Plays TTS directly on watch speaker",
                                 fontSize = 8.sp,
                                 color = OneUiTextSecondary
                             )
@@ -172,9 +172,9 @@ fun SettingsScreen(
                     onCheckedChange = { onToggleAudioTones() },
                     label = {
                         Column {
-                            Text("Bipes Sonoros", fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+                            Text("Audio Beep Tones", fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
                             Text(
-                                "Sons de cadência e contagem 3-2-1",
+                                "Cadence & 3-2-1 countdown beeps",
                                 fontSize = 8.sp,
                                 color = OneUiTextSecondary
                             )
@@ -200,7 +200,7 @@ fun SettingsScreen(
                     label = {
                         Column {
                             Text(
-                                text = "Coroa Giratória (Watch8)",
+                                text = "Rotating Bezel (Watch8)",
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
@@ -223,7 +223,7 @@ fun SettingsScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "Peso Corporal (Cálculo kcal)",
+                        text = "Body Weight (kcal calculation)",
                         color = OneUiTextSecondary,
                         fontSize = 9.sp
                     )
@@ -238,7 +238,7 @@ fun SettingsScreen(
                         ) {
                             Icon(
                                 imageVector = WatchIcons.Remove,
-                                contentDescription = "Diminuir peso",
+                                contentDescription = "Decrease weight",
                                 modifier = Modifier.size(14.dp)
                             )
                         }
@@ -257,7 +257,7 @@ fun SettingsScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Add,
-                                contentDescription = "Aumentar peso",
+                                contentDescription = "Increase weight",
                                 modifier = Modifier.size(14.dp)
                             )
                         }

@@ -98,7 +98,7 @@ fun RoutineDetailScreen(
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = "${routine.steps.size} exercícios • ~${estMinutes} min",
+                        text = "${routine.steps.size} exercises • ~${estMinutes} min",
                         color = OneUiHealthGreen,
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Medium
@@ -106,13 +106,13 @@ fun RoutineDetailScreen(
                 }
             }
 
-            // Botão Iniciar estilo Samsung Health
+            // Start Button (Samsung Health style)
             item {
                 Chip(
                     onClick = onStartWorkout,
                     label = {
                         Text(
-                            text = "INICIAR",
+                            text = "START",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.Black
@@ -136,7 +136,7 @@ fun RoutineDetailScreen(
 
             item {
                 Text(
-                    text = "Toque no exercício para editar",
+                    text = "Tap any exercise to edit",
                     color = OneUiTextSecondary,
                     fontSize = 9.sp,
                     textAlign = TextAlign.Center,
@@ -144,7 +144,7 @@ fun RoutineDetailScreen(
                 )
             }
 
-            // Lista de séries
+            // Step list
             itemsIndexed(routine.steps, key = { _, step -> step.stepId }) { index, step ->
                 val ex = PresetRoutines.getExercise(step.exerciseId)
                 val unit = if (ex.mode == StepMode.TIMED) "s" else " reps"
@@ -165,13 +165,13 @@ fun RoutineDetailScreen(
                                 )
                                 Icon(
                                     imageVector = Icons.Default.Edit,
-                                    contentDescription = "Editar",
+                                    contentDescription = "Edit",
                                     tint = OneUiTextSecondary,
                                     modifier = Modifier.size(12.dp)
                                 )
                             }
                             Text(
-                                text = "${step.targetValue}$unit • Descanso ${step.restAfterSeconds}s",
+                                text = "${step.targetValue}$unit • Rest ${step.restAfterSeconds}s",
                                 color = OneUiHealthGreen,
                                 fontSize = 10.sp
                             )
@@ -192,13 +192,13 @@ fun RoutineDetailScreen(
                 )
             }
 
-            // Adicionar Exercício
+            // Add Exercise
             item {
                 Chip(
                     onClick = onAddStep,
                     label = {
                         Text(
-                            text = "Adicionar Exercício",
+                            text = "Add Exercise",
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Medium
                         )
@@ -219,13 +219,13 @@ fun RoutineDetailScreen(
                 )
             }
 
-            // Restaurar Padrão ou Excluir
+            // Reset Default or Delete Routine
             item {
                 Chip(
                     onClick = onResetOrDelete,
                     label = {
                         Text(
-                            text = if (routine.isPreset) "Restaurar Padrão" else "Excluir Treino",
+                            text = if (routine.isPreset) "Reset to Default" else "Delete Routine",
                             fontSize = 11.sp,
                             color = if (routine.isPreset) OneUiTextSecondary else OneUiHeartRed
                         )

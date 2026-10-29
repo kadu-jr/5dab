@@ -102,9 +102,9 @@ fun HomeScreen(
                     )
                     Text(
                         text = if (totalSessions > 0) {
-                            "$streakDays dias seguidos • $totalSessions treinos"
+                            "$streakDays day streak • $totalSessions workouts"
                         } else {
-                            "Treinos da Semana"
+                            "Weekly Routines"
                         },
                         color = OneUiTextSecondary,
                         fontSize = 10.sp
@@ -112,7 +112,7 @@ fun HomeScreen(
                 }
             }
 
-            // One UI Pill Cards for Each Day (Seg, Ter, Qua, Qui, Sex)
+            // One UI Pill Cards for Each Day (Mon, Tue, Wed, Thu, Fri)
             items(routines, key = { it.id }) { routine ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -141,7 +141,7 @@ fun HomeScreen(
                             overflow = TextOverflow.Ellipsis
                         )
                         Text(
-                            text = "${routine.steps.size} exercícios • Editar",
+                            text = "${routine.steps.size} sets • Tap to edit",
                             color = OneUiTextSecondary,
                             fontSize = 9.sp
                         )
@@ -157,20 +157,20 @@ fun HomeScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.PlayArrow,
-                            contentDescription = "Iniciar ${routine.name}",
+                            contentDescription = "Start ${routine.name}",
                             modifier = Modifier.size(18.dp)
                         )
                     }
                 }
             }
 
-            // Novo Treino Customizado
+            // New Custom Routine
             item {
                 Chip(
                     onClick = onCreateCustomRoutine,
                     label = {
                         Text(
-                            text = "Novo Treino",
+                            text = "New Custom Routine",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium
                         )
@@ -198,13 +198,13 @@ fun HomeScreen(
                 )
             }
 
-            // Histórico
+            // History
             item {
                 Chip(
                     onClick = onOpenHistory,
                     label = {
                         Text(
-                            text = "Histórico",
+                            text = "Workout History",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium
                         )
@@ -225,13 +225,13 @@ fun HomeScreen(
                 )
             }
 
-            // Configurações
+            // Settings
             item {
                 Chip(
                     onClick = onOpenSettings,
                     label = {
                         Text(
-                            text = "Configurações",
+                            text = "Settings",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium
                         )
